@@ -1,456 +1,487 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Leaf, ClipboardList, CheckCircle, Recycle, Calculator } from "lucide-react";
+import { ArrowRight, Recycle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/Logo";
 import { CASES_MOCK } from "@/lib/mock-data";
 import { formatNum } from "@/lib/impact-calculator";
 
-const TIPOS_EVENTO = [
-  "Festa", "Desfile", "Show", "Corporativo", "Casamento",
-  "Formatura", "Halloween", "Festa Junina", "Afropunk", "Conferência",
-  "Lançamento", "Festival",
+const totalKg = CASES_MOCK.reduce((s, c) => s + c.impacto.kgReaproveitado, 0);
+const totalCo2 = CASES_MOCK.reduce((s, c) => s + c.impacto.co2Evitado, 0);
+
+const STATS = [
+  { valor: formatNum(totalKg), label: "kg reaproveitados nos cases publicados" },
+  { valor: "5", label: "fornecedores de economia circular" },
+  { valor: formatNum(totalCo2), label: "kg de CO₂ evitados no total" },
 ];
 
 const PASSOS = [
   {
-    icon: ClipboardList,
     numero: "01",
     titulo: "Descreva seu evento",
-    desc: "Conte para a gente sobre o seu evento — tipo, tamanho, data e orçamento disponível.",
-    bg: "#2D6A4F",
+    desc: "Tipo, tamanho, data e orçamento. Quanto mais detalhe, mais preciso o plano.",
   },
   {
-    icon: Leaf,
     numero: "02",
     titulo: "Receba seu plano sustentável",
-    desc: "Nossa equipe monta um planejamento personalizado com fornecedores sustentáveis parceiros.",
-    bg: "#4A90D9",
+    desc: "Nossa equipe monta um planejamento personalizado com fornecedores da rede Loopp.",
   },
   {
-    icon: CheckCircle,
     numero: "03",
     titulo: "Aprove e realize",
-    desc: "Revise, aprove o plano e deixe a Loopp fechar o ciclo do seu evento.",
-    bg: "#1A1A1A",
+    desc: "Revise, ajuste se precisar, e dê o aval. A Loopp garante o ciclo fechado.",
   },
 ];
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.12, duration: 0.5, ease: "easeOut" as const },
-  }),
-};
-
 export default function LandingPage() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 80);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-[#F5EDD8] flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
+
       {/* Nav */}
-      <header className="sticky top-0 z-50 border-b border-[#E5D9BF] bg-[#F5EDD8]/95 backdrop-blur-sm">
+      <header
+        className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "bg-[#F5EDD8]/95 backdrop-blur-sm border-b border-[#E5D9BF]"
+            : "border-b border-white/10"
+        }`}
+      >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Logo size="md" />
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-[#6B7280]">
-            <Link href="/vitrine" className="hover:text-[#2D6A4F] transition-colors">Vitrine</Link>
-            <Link href="/cases" className="hover:text-[#2D6A4F] transition-colors">Cases</Link>
-            <Link href="/calculadora" className="hover:text-[#2D6A4F] transition-colors">Calculadora</Link>
-          </nav>
-          <nav className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" render={<Link href="/login" />} className="text-[#6B7280] hover:text-[#1A1A1A]">
-              Entrar
-            </Button>
-            <Button
-              size="sm"
-              render={<Link href="/cadastro" />}
-              className="bg-[#2D6A4F] text-white hover:bg-[#235540] rounded-lg"
+          <Logo size="md" variant={scrolled ? "default" : "white"} />
+
+          <nav
+            className={`hidden md:flex items-center gap-6 text-sm font-medium ${
+              scrolled ? "text-[#6B7280]" : "text-white/65"
+            }`}
+          >
+            <Link
+              href="/vitrine"
+              className={`transition-colors ${scrolled ? "hover:text-[#2D6A4F]" : "hover:text-white"}`}
             >
-              Sou cliente
-            </Button>
+              Vitrine
+            </Link>
+            <Link
+              href="/cases"
+              className={`transition-colors ${scrolled ? "hover:text-[#2D6A4F]" : "hover:text-white"}`}
+            >
+              Cases
+            </Link>
+            <Link
+              href="/calculadora"
+              className={`transition-colors ${scrolled ? "hover:text-[#2D6A4F]" : "hover:text-white"}`}
+            >
+              Calculadora
+            </Link>
           </nav>
+
+          <div className="flex items-center gap-2">
+            {scrolled ? (
+              <>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  render={<Link href="/login" />}
+                  className="text-[#6B7280] hover:text-[#1A1A1A]"
+                >
+                  Entrar
+                </Button>
+                <Button
+                  size="sm"
+                  render={<Link href="/cadastro" />}
+                  className="bg-[#2D6A4F] text-white hover:bg-[#235540] rounded-lg"
+                >
+                  Sou cliente
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  render={<Link href="/login" />}
+                  className="text-white/65 hover:text-white hover:bg-white/10"
+                >
+                  Entrar
+                </Button>
+                <Button
+                  size="sm"
+                  render={<Link href="/cadastro" />}
+                  className="bg-white text-[#152E1E] hover:bg-white/90 rounded-lg font-semibold"
+                >
+                  Sou cliente
+                </Button>
+              </>
+            )}
+          </div>
         </div>
       </header>
 
       {/* Hero */}
-      <section className="relative flex-1 flex items-center overflow-hidden min-h-[80vh]">
-        <div className="absolute -top-32 -right-32 w-[480px] h-[480px] rounded-full border-2 border-[#2D6A4F]/10 pointer-events-none" />
-        <div className="absolute -bottom-20 -left-20 w-[320px] h-[320px] rounded-full border border-[#4A90D9]/10 pointer-events-none" />
-        <div className="absolute top-1/2 right-[10%] w-48 h-48 rounded-full bg-[#F9E784]/40 blur-3xl pointer-events-none" />
+      <section className="relative min-h-screen flex items-center bg-[#152E1E] overflow-hidden">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-24 pb-28 w-full">
 
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 lg:py-32 w-full">
-          <div className="max-w-3xl">
+          <motion.h1
+            initial={{ opacity: 0, y: 32 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+            className="font-black leading-[0.93] text-white mb-8 max-w-4xl"
+            style={{
+              fontFamily: "var(--font-fraunces)",
+              fontSize: "clamp(2.8rem, 7vw, 5.5rem)",
+              letterSpacing: "-0.03em",
+            }}
+          >
+            Planejamento{" "}
+            <em className="not-italic" style={{ color: "#F9E784" }}>sustentável</em>
+            {" "}para o seu evento.
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="text-lg sm:text-xl max-w-xl mb-12 leading-relaxed"
+            style={{ color: "rgba(255,255,255,0.6)" }}
+          >
+            A Loopp conecta você a fornecedores sustentáveis e monta um plano
+            personalizado — com circularidade real, do primeiro detalhe ao pós-festa.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.38, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col sm:flex-row gap-3"
+          >
+            <Link
+              href="/cadastro"
+              className="inline-flex items-center justify-center gap-2 rounded-xl h-12 px-8 text-base font-bold transition-all hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              style={{ backgroundColor: "#F9E784", color: "#152E1E" }}
+            >
+              Começar agora <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+            <Link
+              href="/cases"
+              className="inline-flex items-center justify-center gap-2 rounded-xl h-12 px-8 text-base font-semibold border transition-all hover:-translate-y-0.5 hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+              style={{ borderColor: "rgba(255,255,255,0.2)", color: "white" }}
+            >
+              Ver cases reais
+            </Link>
+          </motion.div>
+        </div>
+
+        {/* Scroll line */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2" aria-hidden="true">
+          <div
+            className="relative w-px h-14 overflow-hidden"
+            style={{ background: "rgba(255,255,255,0.1)" }}
+          >
             <motion.div
-              initial={{ opacity: 0, y: -12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              className="inline-flex items-center gap-2 bg-[#2D6A4F]/10 border border-[#2D6A4F]/20 text-[#2D6A4F] text-sm font-semibold px-3 py-1.5 rounded-full mb-6"
-            >
-              <span className="w-2 h-2 rounded-full bg-[#2D6A4F] animate-pulse" />
-              Eventos que fecham o ciclo
-            </motion.div>
+              className="absolute w-full"
+              style={{ height: 20, top: 0, background: "rgba(255,255,255,0.45)" }}
+              animate={{ y: [-20, 56] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: "linear", repeatDelay: 0.4 }}
+            />
+          </div>
+        </div>
+      </section>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight text-[#1A1A1A] mb-6"
-              style={{ fontFamily: "var(--font-fraunces)" }}
-            >
-              Planejamento{" "}
-              <span className="text-[#2D6A4F]">sustentável</span>
-              <br />
-              para o seu evento.
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.25 }}
-              className="text-lg sm:text-xl text-[#6B7280] max-w-xl mb-10 leading-relaxed"
-            >
-              A Loopp conecta você a fornecedores sustentáveis e monta um plano
-              personalizado para o seu evento — com circularidade real, do primeiro
-              detalhe ao pós-festa.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.35 }}
-              className="flex flex-col sm:flex-row gap-3"
-            >
-              <Button
-                size="lg"
-                render={<Link href="/cadastro" />}
-                className="bg-[#2D6A4F] hover:bg-[#235540] text-white rounded-xl h-13 px-8 text-base font-semibold shadow-lg shadow-[#2D6A4F]/20 transition-all hover:shadow-xl hover:shadow-[#2D6A4F]/30 hover:-translate-y-0.5 gap-2"
-              >
-                Sou cliente <ArrowRight className="h-4 w-4" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                render={<Link href="/login" />}
-                className="rounded-xl h-13 px-8 text-base font-semibold border-[#2D6A4F]/30 text-[#2D6A4F] hover:bg-[#2D6A4F]/5 hover:-translate-y-0.5 transition-all"
-              >
-                Entrar na plataforma
-              </Button>
-            </motion.div>
+      {/* Stats */}
+      <section className="bg-white border-b border-[#E5D9BF]">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-[#E5D9BF]">
+            {STATS.map((s) => (
+              <div key={s.label} className="px-8 sm:px-12 py-9">
+                <p
+                  className="text-4xl font-black text-[#2D6A4F] leading-none mb-1.5"
+                  style={{ fontFamily: "var(--font-fraunces)" }}
+                >
+                  {s.valor}
+                </p>
+                <p className="text-sm text-[#555B68]">{s.label}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Como funciona */}
-      <section className="bg-white py-20">
+      <section className="bg-white py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            variants={fadeUp}
-            custom={0}
-            className="text-center mb-14"
-          >
-            <h2
-              className="text-4xl font-bold text-[#1A1A1A] mb-3"
-              style={{ fontFamily: "var(--font-fraunces)" }}
-            >
-              Como funciona
-            </h2>
-            <p className="text-[#6B7280] text-lg">Simples, personalizado e sustentável.</p>
-          </motion.div>
+          <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-16 items-start">
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {PASSOS.map((passo, i) => {
-              const Icon = passo.icon;
-              return (
-                <motion.div
+            <div>
+              <h2
+                className="text-5xl font-black text-[#1A1A1A] leading-tight mb-5"
+                style={{ fontFamily: "var(--font-fraunces)" }}
+              >
+                Como funciona
+              </h2>
+              <p className="text-[#555B68] leading-relaxed mb-8 max-w-xs">
+                Você descreve o evento, a gente monta o plano. Três passos.
+              </p>
+              <Button
+                render={<Link href="/cadastro" />}
+                className="bg-[#2D6A4F] hover:bg-[#235540] text-white rounded-xl gap-2"
+              >
+                Começar agora <ArrowRight className="h-4 w-4" />
+              </Button>
+            </div>
+
+            <div>
+              {PASSOS.map((passo, i) => (
+                <div
                   key={i}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  variants={fadeUp}
-                  custom={i + 1}
-                  className="relative rounded-2xl p-7 bg-[#F5EDD8] border border-[#E5D9BF] hover:shadow-md transition-shadow"
+                  className="border-t border-[#E5D9BF] py-7 grid grid-cols-[2.5rem_1fr] gap-5"
                 >
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
-                    style={{ backgroundColor: passo.bg + "20" }}
-                  >
-                    <Icon className="h-6 w-6" style={{ color: passo.bg }} />
-                  </div>
                   <span
-                    className="absolute top-6 right-6 text-5xl font-black opacity-5 select-none"
-                    style={{ fontFamily: "var(--font-fraunces)" }}
+                    className="text-4xl font-black leading-none mt-0.5"
+                    style={{ fontFamily: "var(--font-fraunces)", color: "#8A8178" }}
                   >
                     {passo.numero}
                   </span>
-                  <h3
-                    className="text-xl font-bold text-[#1A1A1A] mb-2"
-                    style={{ fontFamily: "var(--font-fraunces)" }}
-                  >
-                    {passo.titulo}
-                  </h3>
-                  <p className="text-[#6B7280] leading-relaxed">{passo.desc}</p>
-                </motion.div>
-              );
-            })}
+                  <div>
+                    <h3
+                      className="text-lg font-bold text-[#1A1A1A] mb-1.5"
+                      style={{ fontFamily: "var(--font-fraunces)" }}
+                    >
+                      {passo.titulo}
+                    </h3>
+                    <p className="text-sm text-[#555B68] leading-relaxed">{passo.desc}</p>
+                  </div>
+                </div>
+              ))}
+              <div className="border-t border-[#E5D9BF]" />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Cases preview */}
-      <section className="py-20 bg-[#F5EDD8]">
+      {/* Cases */}
+      <section className="bg-[#F5EDD8] py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            custom={0}
-            className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-12"
-          >
-            <div>
-              <h2
-                className="text-4xl font-bold text-[#1A1A1A] mb-2"
-                style={{ fontFamily: "var(--font-fraunces)" }}
-              >
-                Eventos que já fecharam o ciclo
-              </h2>
-              <p className="text-[#6B7280] text-lg">Resultados reais de quem já usou a Loopp.</p>
-            </div>
+          <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-10">
+            <h2
+              className="text-4xl font-black text-[#1A1A1A]"
+              style={{ fontFamily: "var(--font-fraunces)" }}
+            >
+              Eventos que já fecharam o ciclo
+            </h2>
             <Button
               variant="outline"
               render={<Link href="/cases" />}
               className="shrink-0 border-[#2D6A4F]/30 text-[#2D6A4F] hover:bg-[#2D6A4F]/5 rounded-xl gap-1.5"
             >
-              Ver todos os cases <ArrowRight className="h-3.5 w-3.5" />
+              Ver todos <ArrowRight className="h-3.5 w-3.5" />
             </Button>
-          </motion.div>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {CASES_MOCK.map((caso, i) => (
-              <motion.div
-                key={caso.slug}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeUp}
-                custom={i + 1}
-                className="bg-white rounded-2xl border border-[#E5D9BF] overflow-hidden hover:shadow-md transition-shadow group"
+          <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4">
+            {CASES_MOCK[0] && (
+              <Link
+                href={`/cases/${CASES_MOCK[0].slug}`}
+                className="group bg-white rounded-2xl border border-[#E5D9BF] overflow-hidden hover:shadow-lg transition-shadow"
               >
                 <div
-                  className="h-28 relative overflow-hidden flex items-end p-4"
-                  style={{ backgroundColor: caso.corCard + "22" }}
+                  className="h-52 relative flex items-end p-6"
+                  style={{ backgroundColor: `${CASES_MOCK[0].corCard}22` }}
                 >
                   <div
                     className="absolute inset-0"
                     style={{
-                      background: `radial-gradient(ellipse at 20% 60%, ${caso.corCard}55, transparent 70%)`,
+                      background: `radial-gradient(ellipse at 20% 70%, ${CASES_MOCK[0].corCard}55, transparent 65%)`,
                     }}
                   />
                   <span
-                    className="relative z-10 text-xs font-bold px-2 py-0.5 rounded-full text-white"
-                    style={{ backgroundColor: caso.corCard }}
+                    className="relative z-10 text-xs font-bold px-2.5 py-1 rounded-full text-white"
+                    style={{ backgroundColor: CASES_MOCK[0].corCard }}
                   >
-                    {caso.tipo}
+                    {CASES_MOCK[0].tipo}
                   </span>
                 </div>
-                <div className="p-5">
+                <div className="p-6">
                   <h3
-                    className="font-bold text-[#1A1A1A] mb-1 leading-snug text-sm"
+                    className="text-2xl font-bold text-[#1A1A1A] mb-2 group-hover:text-[#2D6A4F] transition-colors"
                     style={{ fontFamily: "var(--font-fraunces)" }}
                   >
-                    {caso.evento}
+                    {CASES_MOCK[0].evento}
                   </h3>
-                  <div className="flex items-center gap-1.5 mb-4">
-                    <Recycle className="h-3.5 w-3.5 text-[#2D6A4F]" />
-                    <span className="text-xs font-semibold text-[#2D6A4F]">
-                      {formatNum(caso.impacto.kgReaproveitado)} kg reaproveitados
+                  <p className="text-sm text-[#555B68] mb-5 leading-relaxed">
+                    {CASES_MOCK[0].fraseImpacto}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1.5">
+                      <Recycle className="h-4 w-4 text-[#2D6A4F]" aria-hidden="true" />
+                      <span className="text-sm font-semibold text-[#2D6A4F]">
+                        {formatNum(CASES_MOCK[0].impacto.kgReaproveitado)} kg reaproveitados
+                      </span>
+                    </div>
+                    <ArrowRight
+                      className="h-4 w-4 text-[#4A90D9] opacity-0 group-hover:opacity-100 transition-opacity"
+                      aria-hidden="true"
+                    />
+                  </div>
+                </div>
+              </Link>
+            )}
+
+            <div className="grid grid-rows-2 gap-4">
+              {CASES_MOCK.slice(1, 3).map((caso) => (
+                <Link
+                  key={caso.slug}
+                  href={`/cases/${caso.slug}`}
+                  className="group bg-white rounded-2xl border border-[#E5D9BF] overflow-hidden hover:shadow-md transition-shadow flex flex-col"
+                >
+                  <div
+                    className="h-24 relative flex items-end p-4"
+                    style={{ backgroundColor: `${caso.corCard}22` }}
+                  >
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        background: `radial-gradient(ellipse at 20% 70%, ${caso.corCard}44, transparent 65%)`,
+                      }}
+                    />
+                    <span
+                      className="relative z-10 text-xs font-bold px-2 py-0.5 rounded-full text-white"
+                      style={{ backgroundColor: caso.corCard }}
+                    >
+                      {caso.tipo}
                     </span>
                   </div>
-                  <Link
-                    href={`/cases/${caso.slug}`}
-                    className="text-xs font-semibold text-[#4A90D9] hover:text-[#2D6A4F] transition-colors inline-flex items-center gap-1"
-                  >
-                    Ver case <ArrowRight className="h-3 w-3" />
-                  </Link>
-                </div>
-              </motion.div>
-            ))}
+                  <div className="p-4 flex-1 flex flex-col justify-between">
+                    <h3
+                      className="font-bold text-sm text-[#1A1A1A] leading-snug group-hover:text-[#2D6A4F] transition-colors"
+                      style={{ fontFamily: "var(--font-fraunces)" }}
+                    >
+                      {caso.evento}
+                    </h3>
+                    <div className="flex items-center gap-1.5 mt-2">
+                      <Recycle className="h-3.5 w-3.5 text-[#2D6A4F]" aria-hidden="true" />
+                      <span className="text-xs font-semibold text-[#2D6A4F]">
+                        {formatNum(caso.impacto.kgReaproveitado)} kg
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Vitrine CTA */}
-      <section className="bg-white py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            custom={0}
-            className="flex flex-col md:flex-row items-center justify-between gap-8 bg-[#F5EDD8] rounded-3xl p-10 border border-[#E5D9BF]"
+      {/* Missão */}
+      <section className="bg-[#152E1E] py-28">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+          <h2
+            className="font-black text-white leading-tight mb-8"
+            style={{
+              fontFamily: "var(--font-fraunces)",
+              fontSize: "clamp(2.2rem, 5vw, 4rem)",
+              letterSpacing: "-0.025em",
+            }}
           >
-            <div className="flex-1">
-              <div className="inline-flex items-center gap-2 bg-[#4A90D9]/10 text-[#4A90D9] text-sm font-semibold px-3 py-1 rounded-full mb-3">
-                <Leaf className="h-3.5 w-3.5" />
-                Disponível agora
-              </div>
-              <h2
-                className="text-3xl font-bold text-[#1A1A1A] mb-2"
+            Celebrar não precisa custar ao planeta.
+          </h2>
+          <p
+            className="text-lg leading-relaxed max-w-2xl mx-auto mb-10"
+            style={{ color: "rgba(255,255,255,0.6)" }}
+          >
+            A Loopp conecta organizadores a uma rede de fornecedores que praticam
+            a economia circular — de confecções comunitárias que reaproveitam
+            tecidos à logística de baixa emissão.
+          </p>
+          <Link
+            href="/cadastro"
+            className="inline-flex items-center gap-2 rounded-xl h-12 px-8 text-base font-bold transition-all hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            style={{ backgroundColor: "#F9E784", color: "#152E1E" }}
+          >
+            Começar meu evento <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </Link>
+        </div>
+      </section>
+
+      {/* Explorar */}
+      <section className="bg-white py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Link
+              href="/vitrine"
+              className="group rounded-2xl p-8 border border-[#E5D9BF] bg-[#F5EDD8] hover:border-[#2D6A4F]/30 hover:shadow-md transition-all"
+            >
+              <h3
+                className="text-2xl font-bold text-[#1A1A1A] mb-2 group-hover:text-[#2D6A4F] transition-colors"
                 style={{ fontFamily: "var(--font-fraunces)" }}
               >
-                Explore os materiais disponíveis
-              </h2>
-              <p className="text-[#6B7280] max-w-lg">
-                Fantasias, tecidos, cenografia, energia renovável e muito mais — tudo
-                reaproveitado dos fornecedores parceiros da Loopp.
+                Vitrine de materiais
+              </h3>
+              <p className="text-sm text-[#555B68] mb-5 leading-relaxed">
+                Fantasias, tecidos, cenografia, energia renovável — tudo
+                reaproveitado dos fornecedores parceiros.
               </p>
-            </div>
-            <Button
-              render={<Link href="/vitrine" />}
-              className="bg-[#4A90D9] hover:bg-[#3a7bc8] text-white rounded-xl px-8 h-11 font-semibold shrink-0 gap-2"
-            >
-              Ver vitrine <ArrowRight className="h-4 w-4" />
-            </Button>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Quem atendemos */}
-      <section className="py-20 bg-[#F5EDD8]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <motion.h2
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            custom={0}
-            className="text-4xl font-bold text-[#1A1A1A] mb-3"
-            style={{ fontFamily: "var(--font-fraunces)" }}
-          >
-            Quem atendemos
-          </motion.h2>
-          <motion.p
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            custom={1}
-            className="text-[#6B7280] text-lg mb-10"
-          >
-            Do casamento íntimo ao festival de milhares.
-          </motion.p>
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            custom={2}
-            className="flex flex-wrap justify-center gap-3"
-          >
-            {TIPOS_EVENTO.map((tipo) => (
-              <span
-                key={tipo}
-                className="px-4 py-2 rounded-full text-sm font-semibold bg-white border border-[#E5D9BF] text-[#1A1A1A] hover:bg-[#2D6A4F] hover:text-white hover:border-[#2D6A4F] transition-colors cursor-default"
-              >
-                {tipo}
+              <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#2D6A4F]">
+                Explorar materiais <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
               </span>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Sobre */}
-      <section className="py-20 bg-[#2D6A4F] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 pointer-events-none">
-          <div className="absolute top-10 right-20 w-64 h-64 rounded-full border-2 border-white" />
-          <div className="absolute bottom-10 left-10 w-40 h-40 rounded-full border border-white" />
-        </div>
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <motion.h2
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            custom={0}
-            className="text-4xl font-bold text-white mb-6"
-            style={{ fontFamily: "var(--font-fraunces)" }}
-          >
-            Nossa missão
-          </motion.h2>
-          <motion.p
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            custom={1}
-            className="text-white/80 text-lg leading-relaxed"
-          >
-            A Loopp nasceu da crença de que eventos podem ser bonitos{" "}
-            <em>e</em> responsáveis. Conectamos organizadores a uma rede de
-            fornecedores que praticam a economia circular — de confecções
-            comunitárias que reaproveitam tecidos à logística de baixa emissão.
-            Cada evento com a Loopp é uma afirmação de que celebrar não precisa
-            custar ao planeta.
-          </motion.p>
-        </div>
-      </section>
-
-      {/* Calculadora CTA */}
-      <section className="py-20 bg-white">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            custom={0}
-          >
-            <div className="inline-flex items-center gap-2 bg-[#4A90D9]/10 border border-[#4A90D9]/20 text-[#4A90D9] text-sm font-semibold px-3 py-1.5 rounded-full mb-5">
-              <Calculator className="h-3.5 w-3.5" />
-              Calculadora de Impacto
-            </div>
-            <h2
-              className="text-4xl font-bold text-[#1A1A1A] mb-4"
-              style={{ fontFamily: "var(--font-fraunces)" }}
+            </Link>
+            <Link
+              href="/calculadora"
+              className="group rounded-2xl p-8 border hover:border-[#2D6A4F]/30 hover:shadow-md transition-all"
+              style={{
+                backgroundColor: "rgba(45,106,79,0.05)",
+                borderColor: "rgba(45,106,79,0.15)",
+              }}
             >
-              Descubra o impacto do seu evento
-            </h2>
-            <p className="text-[#6B7280] text-lg mb-8 max-w-xl mx-auto">
-              Estime quantos kg de material serão reaproveitados, o CO₂ evitado
-              e as árvores equivalentes ao realizar seu evento com a Loopp.
-            </p>
-            <Button
-              render={<Link href="/calculadora" />}
-              className="bg-[#4A90D9] hover:bg-[#3a7bc8] text-white rounded-xl px-10 h-12 font-semibold text-base gap-2 shadow-lg shadow-[#4A90D9]/20"
-            >
-              Calcular meu impacto <ArrowRight className="h-4 w-4" />
-            </Button>
-          </motion.div>
+              <h3
+                className="text-2xl font-bold text-[#1A1A1A] mb-2 group-hover:text-[#2D6A4F] transition-colors"
+                style={{ fontFamily: "var(--font-fraunces)" }}
+              >
+                Calculadora de impacto
+              </h3>
+              <p className="text-sm text-[#555B68] mb-5 leading-relaxed">
+                Estime os kg reaproveitados, CO₂ evitado e árvores equivalentes
+                antes de começar.
+              </p>
+              <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#2D6A4F]">
+                Calcular meu impacto <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </span>
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-[#E5D9BF] py-10">
+      <footer
+        className="bg-[#152E1E] py-10"
+        style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
+      >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex flex-col items-center sm:items-start gap-1">
-            <Logo size="sm" />
-            <p className="text-sm text-[#6B7280]">Feche o ciclo do seu evento.</p>
+            <Logo size="sm" variant="white" />
+            <p className="text-sm" style={{ color: "rgba(255,255,255,0.35)" }}>
+              Feche o ciclo do seu evento.
+            </p>
           </div>
-          <nav className="flex items-center gap-5 text-sm text-[#6B7280]">
-            <Link href="/" className="hover:text-[#2D6A4F] transition-colors">Início</Link>
-            <Link href="/vitrine" className="hover:text-[#2D6A4F] transition-colors">Vitrine</Link>
-            <Link href="/cases" className="hover:text-[#2D6A4F] transition-colors">Cases</Link>
-            <Link href="/calculadora" className="hover:text-[#2D6A4F] transition-colors">Calculadora</Link>
-            <Link href="/login" className="hover:text-[#2D6A4F] transition-colors">Entrar</Link>
-            <Link href="/cadastro" className="hover:text-[#2D6A4F] transition-colors">Cadastrar</Link>
+          <nav
+            className="flex items-center flex-wrap justify-center gap-5 text-sm"
+            style={{ color: "rgba(255,255,255,0.45)" }}
+          >
+            <Link href="/" className="hover:text-white transition-colors">Início</Link>
+            <Link href="/vitrine" className="hover:text-white transition-colors">Vitrine</Link>
+            <Link href="/cases" className="hover:text-white transition-colors">Cases</Link>
+            <Link href="/calculadora" className="hover:text-white transition-colors">Calculadora</Link>
+            <Link href="/login" className="hover:text-white transition-colors">Entrar</Link>
           </nav>
-          <p className="text-xs text-[#6B7280]/60">© 2026 Loopp</p>
+          <p className="text-xs" style={{ color: "rgba(255,255,255,0.2)" }}>© 2026 Loopp</p>
         </div>
       </footer>
     </div>

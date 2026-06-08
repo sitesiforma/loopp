@@ -5,20 +5,23 @@ import Link from "next/link";
 interface LogoProps {
   size?: "sm" | "md" | "lg";
   href?: string;
+  variant?: "default" | "white";
 }
 
-export default function Logo({ size = "md", href = "/" }: LogoProps) {
+export default function Logo({ size = "md", href = "/", variant = "default" }: LogoProps) {
   const sizes = {
     sm: "text-xl",
     md: "text-2xl",
     lg: "text-4xl",
   };
 
+  const color = variant === "white" ? "#FFFFFF" : "#2D6A4F";
+
   return (
     <Link href={href} className="inline-flex items-center group select-none">
       <span
         className={`font-bold tracking-tight ${sizes[size]}`}
-        style={{ fontFamily: "var(--font-fraunces)", color: "#2D6A4F" }}
+        style={{ fontFamily: "var(--font-fraunces)", color }}
       >
         Loo
       </span>
@@ -37,14 +40,14 @@ export default function Logo({ size = "md", href = "/" }: LogoProps) {
               fontFamily: "var(--font-fraunces)",
               fontWeight: 700,
               fontSize: size === "sm" ? 16 : size === "md" ? 19 : 28,
-              fill: "#2D6A4F",
+              fill: color,
             }}
           >
             pp
           </text>
           <path
             d="M28 4 Q35 0 38 8 Q41 16 34 18"
-            stroke="#2D6A4F"
+            stroke={color}
             strokeWidth="1.5"
             strokeLinecap="round"
             fill="none"
@@ -52,7 +55,7 @@ export default function Logo({ size = "md", href = "/" }: LogoProps) {
           />
           <polyline
             points="34,14 34,18 38,18"
-            stroke="#2D6A4F"
+            stroke={color}
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"

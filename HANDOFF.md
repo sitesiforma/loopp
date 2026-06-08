@@ -1,14 +1,15 @@
 # Loopp — Handoff do Projeto
 
 **Tagline:** Feche o ciclo do seu evento.  
-**Data:** 2026-06-04  
-**Status:** Protótipo funcional rodando em localhost
+**Última atualização:** 2026-06-08  
+**Status:** Protótipo funcional — localhost + produção no Vercel  
+**URL de produção:** https://loopp-eight.vercel.app
 
 ---
 
 ## O que é
 
-Loopp é uma plataforma de planejamento sustentável para eventos. Clientes descrevem seu evento e recebem um plano personalizado montado por um time interno (admin) usando um banco de fornecedores sustentáveis cadastrados.
+Loopp é uma plataforma de planejamento sustentável para eventos. Clientes descrevem seu evento e recebem um plano personalizado montado por um time interno (admin) usando um banco de fornecedores sustentáveis cadastrados. O site também tem páginas públicas de descoberta: vitrine de materiais, portfólio de cases e calculadora de impacto ambiental.
 
 ### Fluxo principal
 
@@ -26,7 +27,7 @@ Landing → Cadastro → Dashboard do Cliente
                           ↓
              [CLIENTE] vê o planejamento, aprova ou pede ajuste
                           ↓
-                    Status: "Aprovado" ou "Ajuste solicitado"
+                    Status: "Aprovado" → card de impacto estimado aparece
 ```
 
 ---
@@ -62,6 +63,7 @@ npm run dev
 | Toasts | sonner |
 | Persistência | `localStorage` (protótipo — sem banco de dados) |
 | Tipagem | TypeScript 5 |
+| Deploy | Vercel (GitHub: `sitesiforma/loopp`) |
 
 ### Atenção: shadcn usa base-ui, não Radix
 
@@ -89,53 +91,48 @@ loopp/
 │   ├── layout.tsx               # Root layout — fontes, Toaster
 │   ├── page.tsx                 # Landing page (pública)
 │   ├── globals.css              # Variáveis de cor, tipografia base
-│   ├── login/
-│   │   └── page.tsx             # Formulário de login
-│   ├── cadastro/
-│   │   └── page.tsx             # Formulário de cadastro (PF/PJ)
+│   ├── login/page.tsx
+│   ├── cadastro/page.tsx
 │   ├── dashboard/
 │   │   ├── page.tsx             # Painel do cliente — lista de pedidos
-│   │   └── loading.tsx          # Skeleton de carregamento
-│   ├── novo-pedido/
-│   │   └── page.tsx             # Formulário de criação de pedido
-│   ├── pedido/[id]/
-│   │   └── page.tsx             # Detalhe do pedido (visão do cliente)
+│   │   └── loading.tsx
+│   ├── novo-pedido/page.tsx
+│   ├── pedido/[id]/page.tsx     # Detalhe do pedido (cliente) + card de impacto
+│   ├── vitrine/
+│   │   ├── page.tsx             # Vitrine pública de materiais (filtros + grid)
+│   │   └── loading.tsx
+│   ├── cases/
+│   │   ├── page.tsx             # Portfólio de cases
+│   │   ├── loading.tsx
+│   │   └── [slug]/
+│   │       ├── page.tsx         # Detalhe editorial do case
+│   │       └── loading.tsx
+│   ├── calculadora/
+│   │   ├── page.tsx             # Calculadora de impacto reativa (2 colunas)
+│   │   └── loading.tsx
 │   └── admin/
 │       ├── page.tsx             # Painel admin — tabela de pedidos
-│       ├── loading.tsx          # Skeleton de carregamento
-│       ├── pedido/[id]/
-│       │   └── page.tsx         # Detalhe do pedido (visão admin)
+│       ├── loading.tsx
+│       ├── pedido/[id]/page.tsx # Detalhe do pedido (admin) + editor
 │       └── fornecedores/
-│           └── page.tsx         # CRUD de fornecedores
+│           └── page.tsx         # CRUD de fornecedores + gestão de materiais
 │
 ├── components/
-│   ├── Logo.tsx                 # Logo "Loopp" com SVG inline
+│   ├── Logo.tsx
 │   ├── Header.tsx               # Header com logout e nome do usuário
 │   ├── StatusBadge.tsx          # Badge colorido por status do pedido
 │   ├── Stepper.tsx              # Timeline de progresso do pedido
 │   └── ui/                      # Componentes shadcn/ui gerados
-│       ├── button.tsx
-│       ├── input.tsx
-│       ├── select.tsx
-│       ├── textarea.tsx
-│       ├── badge.tsx
-│       ├── card.tsx
-│       ├── label.tsx
-│       ├── dialog.tsx
-│       ├── checkbox.tsx
-│       ├── separator.tsx
-│       └── sonner.tsx
 │
 ├── lib/
 │   ├── types.ts                 # Todos os tipos TypeScript do domínio
 │   ├── mock-data.ts             # Dados mock + funções de localStorage
+│   ├── impact-calculator.ts     # Lógica da calculadora de impacto
 │   └── utils.ts                 # cn() helper (shadcn padrão)
 │
 ├── package.json
 ├── next.config.ts
-├── postcss.config.mjs
-├── tsconfig.json
-└── components.json              # Config do shadcn/ui
+└── components.json
 ```
 
 ---
@@ -154,34 +151,47 @@ type StatusPedido =
   | "aprovado"             // cliente aprovou
   | "ajuste_solicitado"    // cliente pediu mudança
 
-// Entidade principal
-interface Pedido {
-  id: string
-  clienteId: string
-  clienteNome: string
-  nomeEvento: string
-  tipoEvento: TipoEvento
-  dataEvento: string          // ISO date
-  localizacao: string
-  tamanho: TamanhoEvento
-  orcamento: string
-  descricao: string
-  status: StatusPedido
-  planejamento?: string       // texto escrito pelo admin
-  fornecedoresSelecionados?: string[]
-  historico: HistoricoStatus[]
-  criadoEm: string
+interface Pedido { ... }
+
+// Material disponível na vitrine — vinculado a um Fornecedor
+interface Material {
+  id, nome, fornecedorId, fornecedorNome
+  categoria: CategoriaVitrine   // Figurino | Resíduos Têxteis | Cenografia | ...
+  tiposEvento: TipoEvento[]
+  descricao, cor                // cor usada no placeholder visual do card
 }
 
+// Fornecedor agora inclui materiais gerenciados pelo admin
 interface Fornecedor {
-  id: string
-  nome: string
-  categoria: CategoriaFornecedor
-  descricao: string
-  contato: string
-  tags: string[]
+  id, nome, categoria, descricao, contato, tags
+  materiais?: Material[]        // editável no painel admin/fornecedores
+}
+
+// Case do portfólio
+interface EventoCase {
+  slug, evento, tipo, cliente, ano
+  desafio, solucao
+  fornecedores: string[]
+  impacto: { kgReaproveitado, co2Evitado, arvores, itensResgatados }
+  depoimento, autorDepoimento
+  corCard, fraseImpacto
 }
 ```
+
+---
+
+## Calculadora de impacto (`lib/impact-calculator.ts`)
+
+```typescript
+calcularImpacto({ tipoEvento, convidados, fantasias, cenografia, decoracao })
+// → { kgReaproveitado, co2Evitado, arvores, itensResgatados }
+
+tamanhoParaConvidados(tamanho: TamanhoEvento) // → número médio de convidados
+pedidoTemFantasias(tipoEvento)                // → boolean (true para Festa, Desfile, etc.)
+formatNum(n)                                  // → "1.240" (formato pt-BR)
+```
+
+Constantes base: 0,5 kg/pessoa, CO₂ × 3,0, 21 kg CO₂/árvore/ano. Multiplicadores por tipo: Desfile 2,5×, Show 1,8×, Casamento 1,3×, Festa 1,2×, etc.
 
 ---
 
@@ -192,15 +202,12 @@ Todas as funções de leitura/escrita usam `localStorage`. As chaves são:
 | Chave | Conteúdo |
 |---|---|
 | `loopp_pedidos` | `Pedido[]` — todos os pedidos |
-| `loopp_fornecedores` | `Fornecedor[]` — banco de fornecedores |
+| `loopp_fornecedores` | `Fornecedor[]` — banco de fornecedores (inclui materiais) |
 | `loopp_user` | `User` — usuário logado atualmente |
 
-```typescript
-// Padrão de uso em qualquer página
-import { getPedidos, savePedidos, getUser, setUser } from "@/lib/mock-data"
-```
+Cases (`CASES_MOCK`) são dados estáticos — não vão para o localStorage.
 
-Na primeira visita, o `localStorage` é populado com 3 pedidos mock e 5 fornecedores pré-cadastrados.
+Na primeira visita, o `localStorage` é populado com 3 pedidos mock e 5 fornecedores com 8 materiais pré-cadastrados.
 
 ---
 
@@ -209,46 +216,28 @@ Na primeira visita, o `localStorage` é populado com 3 pedidos mock e 5 forneced
 ### Cores
 
 ```css
---background:  #F5EDD8  /* bege — fundo de todas as páginas */
---primary:     #2D6A4F  /* verde escuro — botões, títulos, CTA */
---accent:      #4A90D9  /* azul médio — destaques, badges info */
---secondary:   #F9E784  /* amarelo pastel — tags, badge "aguardando" */
---foreground:  #1A1A1A  /* texto principal */
+--background:       #F5EDD8  /* bege — fundo de todas as páginas */
+--primary:          #2D6A4F  /* verde escuro — botões, títulos, CTA */
+--accent:           #4A90D9  /* azul médio — destaques, badges info */
+--secondary:        #F9E784  /* amarelo pastel — tags, badge "aguardando" */
+--foreground:       #1A1A1A  /* texto principal */
 --muted-foreground: #6B7280  /* texto secundário */
---card:        #FFFFFF  /* fundo dos cards */
+--card:             #FFFFFF  /* fundo dos cards */
 ```
 
 ### Tipografia
 
-| Uso | Fonte | Peso |
+| Uso | Fonte | Como aplicar |
 |---|---|---|
-| Títulos (h1, h2, h3) | **Fraunces** (Google Fonts) | 400–900 |
-| Corpo, UI, labels | **DM Sans** (Google Fonts) | 400–700 |
+| Títulos h1–h3 | **Fraunces** | `style={{ fontFamily: "var(--font-fraunces)" }}` |
+| Corpo, UI, labels | **DM Sans** | padrão do body (já aplicado no globals.css) |
 
-Aplicar via CSS variable:
-```css
-font-family: var(--font-fraunces);  /* títulos */
-font-family: var(--font-dm-sans);   /* corpo */
-```
-
-### Raio e sombra padrão dos cards
+### Cards
 
 ```css
 border-radius: 16px;  /* rounded-2xl */
 box-shadow: 0 2px 16px rgba(0,0,0,0.07);
 ```
-
----
-
-## Status badges — cores
-
-| Status | Cor |
-|---|---|
-| Aguardando análise | Amarelo `#F9E784` / texto `#7A6800` |
-| Em planejamento | Azul claro `#4A90D9/15` / texto `#1A5FA8` |
-| Planejamento enviado | Verde claro `#2D6A4F/15` / texto `#2D6A4F` |
-| Aprovado | Verde sólido `#2D6A4F` / texto branco |
-| Ajuste solicitado | Laranja suave |
 
 ---
 
@@ -259,43 +248,58 @@ Toda proteção é feita no `useEffect` de cada página via `getUser()`. Não h�
 | Rota | Acesso |
 |---|---|
 | `/` | Pública |
-| `/login` | Pública |
-| `/cadastro` | Pública |
-| `/dashboard` | Apenas clientes |
-| `/novo-pedido` | Apenas clientes |
-| `/pedido/[id]` | Apenas clientes |
-| `/admin` | Apenas admin |
-| `/admin/pedido/[id]` | Apenas admin |
-| `/admin/fornecedores` | Apenas admin |
-
-Redirecionamentos:
-- Não logado → `/login`
-- Cliente tenta acessar `/admin` → `/dashboard`
-- Admin tenta acessar `/dashboard` → `/admin`
+| `/vitrine` | Pública |
+| `/cases` | Pública |
+| `/cases/[slug]` | Pública |
+| `/calculadora` | Pública |
+| `/login` `/cadastro` | Pública |
+| `/dashboard` `/novo-pedido` `/pedido/[id]` | Apenas clientes |
+| `/admin` `/admin/pedido/[id]` `/admin/fornecedores` | Apenas admin |
 
 ---
 
-## Fornecedores pré-cadastrados
+## Dados mock pré-carregados
 
-| Nome | Categoria |
-|---|---|
-| Sustenta Carnaval | Resíduos Têxteis |
-| Mulheres do Sul Global | Confecção Sustentável |
-| EcoFest Energia | Energia Renovável |
-| Verde Cena | Cenografia Sustentável |
-| Ciclo Logística | Logística Verde |
+### Fornecedores (5) com materiais na vitrine (8)
 
----
-
-## Pedidos mock de exemplo
-
-| Evento | Cliente | Status |
+| Fornecedor | Categoria | Materiais |
 |---|---|---|
-| Casamento Sustentável — Marina & Pedro | Marina Costa | Em planejamento |
-| Pulse Summit 2026 | Agência Pulse Creative | Planejamento enviado |
-| Festa de 15 Anos — Isabela | João Alves | Aguardando análise |
+| Sustenta Carnaval | Resíduos Têxteis | Fantasias avulsas, Tecidos por quilo, Adereços de carnaval |
+| Mulheres do Sul Global | Confecção Sustentável | Roupas com retalhos |
+| EcoFest Energia | Energia Renovável | Geradores solares |
+| Verde Cena | Cenografia Sustentável | Painéis cenográficos, Estruturas de isopor |
+| Ciclo Logística | Logística Verde | Transporte de grande volume |
 
-O pedido "Pulse Summit 2026" já tem planejamento escrito — útil para testar o fluxo de aprovação.
+### Pedidos mock (3)
+
+| Evento | Status |
+|---|---|
+| Casamento Sustentável — Marina & Pedro | Em planejamento |
+| Pulse Summit 2026 (já tem planejamento escrito) | Planejamento enviado |
+| Festa de 15 Anos — Isabela | Aguardando análise |
+
+### Cases (3, estáticos)
+
+| Case | Tipo |
+|---|---|
+| Desfile Misci — Rio Fashion Week 2024 | Desfile de Moda |
+| Afropunk Rio 2024 | Festival Cultural |
+| Casamento Fernanda & Rodrigo | Casamento |
+
+---
+
+## Deploy (Vercel)
+
+- **URL:** https://loopp-eight.vercel.app
+- **Repositório:** https://github.com/sitesiforma/loopp
+- **Branch de produção:** `master`
+
+Para deployar manualmente:
+```bash
+vercel --prod --yes
+```
+
+> **Nota sobre o package.json:** `lightningcss-win32-x64-msvc` está em `optionalDependencies` (não em `dependencies`) para que o Vercel/Linux o ignore. O `package-lock.json` está no `.gitignore` pelo mesmo motivo — gerado localmente no Windows, causaria falha no build do Vercel.
 
 ---
 
@@ -306,7 +310,7 @@ O pedido "Pulse Summit 2026" já tem planejamento escrito — útil para testar 
 3. **Admin único** — hardcoded como `admin@loopp.com`. Não há sistema de convite.
 4. **Pedidos mock globais** — os 3 pedidos mock aparecem para qualquer cliente novo (IDs de cliente não coincidem). Em produção, o filtro por `clienteId` resolveria isso.
 5. **Sem upload de arquivos** — o planejamento é texto puro (markdown não renderizado).
-6. **lightningcss nativo** — em Windows via Git Bash, o binário `lightningcss-win32-x64-msvc` precisa ser instalado via PowerShell. Já resolvido no projeto atual.
+6. **lightningcss nativo** — em Windows via Git Bash, instalar sempre via PowerShell.
 
 ---
 
@@ -314,9 +318,10 @@ O pedido "Pulse Summit 2026" já tem planejamento escrito — útil para testar 
 
 - [ ] Substituir `localStorage` por Supabase (banco + auth)
 - [ ] Implementar Row-Level Security no Supabase para isolamento por cliente
-- [ ] Adicionar upload de anexos ao pedido (imagens de referência)
 - [ ] Renderizar markdown no planejamento enviado ao cliente
 - [ ] Notificações por email (Resend) quando status muda
+- [ ] Adicionar upload de anexos ao pedido (imagens de referência)
 - [ ] Painel de métricas no admin (pedidos por status, por tipo, por mês)
 - [ ] Sistema de comentários/mensagens dentro do pedido
 - [ ] Multi-admin com controle de acesso por papel
+- [ ] Conectar vitrine ao fluxo de novo pedido (pré-selecionar materiais de interesse)
