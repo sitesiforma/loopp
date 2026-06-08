@@ -293,18 +293,11 @@ export default function LandingPage() {
                 className="group bg-white rounded-2xl border border-[#E5D9BF] overflow-hidden hover:shadow-lg transition-shadow"
               >
                 <div
-                  className="h-52 relative flex items-end p-6"
-                  style={{ backgroundColor: `${CASES_MOCK[0].corCard}22` }}
+                  className="h-52 flex items-end p-6"
+                  style={{ backgroundColor: "rgba(21,46,30,0.07)" }}
                 >
-                  <div
-                    className="absolute inset-0"
-                    style={{
-                      background: `radial-gradient(ellipse at 20% 70%, ${CASES_MOCK[0].corCard}55, transparent 65%)`,
-                    }}
-                  />
                   <span
-                    className="relative z-10 text-xs font-bold px-2.5 py-1 rounded-full text-white"
-                    style={{ backgroundColor: CASES_MOCK[0].corCard }}
+                    className="text-xs font-bold px-2.5 py-1 rounded-full bg-[#2D6A4F] text-white"
                   >
                     {CASES_MOCK[0].tipo}
                   </span>
@@ -319,17 +312,11 @@ export default function LandingPage() {
                   <p className="text-sm text-[#555B68] mb-5 leading-relaxed">
                     {CASES_MOCK[0].fraseImpacto}
                   </p>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1.5">
-                      <Recycle className="h-4 w-4 text-[#2D6A4F]" aria-hidden="true" />
-                      <span className="text-sm font-semibold text-[#2D6A4F]">
-                        {formatNum(CASES_MOCK[0].impacto.kgReaproveitado)} kg reaproveitados
-                      </span>
-                    </div>
-                    <ArrowRight
-                      className="h-4 w-4 text-[#4A90D9] opacity-0 group-hover:opacity-100 transition-opacity"
-                      aria-hidden="true"
-                    />
+                  <div className="flex items-center gap-1.5">
+                    <Recycle className="h-4 w-4 text-[#2D6A4F]" aria-hidden="true" />
+                    <span className="text-sm font-semibold text-[#2D6A4F]">
+                      {formatNum(CASES_MOCK[0].impacto.kgReaproveitado)} kg reaproveitados
+                    </span>
                   </div>
                 </div>
               </Link>
@@ -343,18 +330,11 @@ export default function LandingPage() {
                   className="group bg-white rounded-2xl border border-[#E5D9BF] overflow-hidden hover:shadow-md transition-shadow flex flex-col"
                 >
                   <div
-                    className="h-24 relative flex items-end p-4"
-                    style={{ backgroundColor: `${caso.corCard}22` }}
+                    className="h-24 flex items-end p-4"
+                    style={{ backgroundColor: "rgba(21,46,30,0.07)" }}
                   >
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        background: `radial-gradient(ellipse at 20% 70%, ${caso.corCard}44, transparent 65%)`,
-                      }}
-                    />
                     <span
-                      className="relative z-10 text-xs font-bold px-2 py-0.5 rounded-full text-white"
-                      style={{ backgroundColor: caso.corCard }}
+                      className="text-xs font-bold px-2 py-0.5 rounded-full bg-[#2D6A4F] text-white"
                     >
                       {caso.tipo}
                     </span>
