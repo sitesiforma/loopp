@@ -27,25 +27,25 @@ const IMPACTO_ITEMS = [
     key: "kgReaproveitado" as const,
     label: "Kg de material reaproveitado",
     icon: Recycle,
-    cor: "#2D6A4F",
+    cor: "#3A7D5A",
   },
   {
     key: "co2Evitado" as const,
     label: "Kg de CO₂ evitado",
     icon: Wind,
-    cor: "#4A90D9",
+    cor: "#4EAF7A",
   },
   {
     key: "arvores" as const,
     label: "Árvores equivalentes",
     icon: TreePine,
-    cor: "#2D6A4F",
+    cor: "#3A7D5A",
   },
   {
     key: "itensResgatados" as const,
     label: "Itens resgatados do descarte",
     icon: Package,
-    cor: "#4A90D9",
+    cor: "#4EAF7A",
   },
 ];
 
@@ -59,19 +59,19 @@ function Toggle({
   onChange: (v: boolean) => void;
 }) {
   return (
-    <div className="flex items-center justify-between py-3 border-b border-[#E5D9BF] last:border-0">
-      <span className="text-sm font-medium text-[#1A1A1A]">{label}</span>
+    <div className="flex items-center justify-between py-3 border-b border-[#E5E5E5] last:border-0">
+      <span className="text-sm font-medium text-[#0A0A0A]">{label}</span>
       <button
         type="button"
         onClick={() => onChange(!value)}
-        className={`relative w-11 h-6 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#2D6A4F]/40 focus:ring-offset-1 ${
-          value ? "bg-[#2D6A4F]" : "bg-[#E5D9BF]"
+        className={`relative w-11 h-6 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#3A7D5A]/40 focus:ring-offset-1 focus:ring-offset-white ${
+          value ? "bg-[#3A7D5A]" : "bg-[#D0D0D0]"
         }`}
         aria-checked={value}
         role="switch"
       >
         <span
-          className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow-sm transition-transform ${
+          className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white transition-transform ${
             value ? "translate-x-5" : "translate-x-0"
           }`}
         />
@@ -116,61 +116,57 @@ export default function CalculadoraPage() {
   const ctaHref = userLogado ? "/novo-pedido" : "/cadastro";
 
   return (
-    <div className="min-h-screen bg-[#F5EDD8] flex flex-col">
-      {/* Nav */}
-      <header className="sticky top-0 z-50 border-b border-[#E5D9BF] bg-[#F5EDD8]/95 backdrop-blur-sm">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Logo size="md" href="/" />
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-            <Link href="/vitrine" className="text-[#6B7280] hover:text-[#2D6A4F] transition-colors">
-              Vitrine
-            </Link>
-            <Link href="/cases" className="text-[#6B7280] hover:text-[#2D6A4F] transition-colors">
-              Cases
-            </Link>
-            <Link href="/calculadora" className="text-[#2D6A4F] font-semibold">
-              Calculadora
-            </Link>
+    <div className="min-h-screen bg-white flex flex-col">
+      {/* Nav pill */}
+      <header className="fixed top-3 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-[800px] bg-[#111111]/95 border border-[#2A2A2A] rounded-[100px] backdrop-blur-[12px]">
+        <div className="px-5 h-12 flex items-center justify-between gap-4">
+          <Logo size="sm" href="/" />
+          <nav className="hidden md:flex items-center gap-5 text-sm font-medium text-[#888888]">
+            <Link href="/empresas" className="hover:text-white transition-colors">Empresas</Link>
+            <Link href="/vitrine" className="hover:text-white transition-colors">Vitrine</Link>
+            <Link href="/cases" className="hover:text-white transition-colors">Cases</Link>
+            <Link href="/calculadora" className="text-white font-semibold">Calculadora</Link>
           </nav>
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"
               size="sm"
               render={<Link href="/login" />}
-              className="text-[#6B7280] hover:text-[#1A1A1A]"
+              className="text-[#888888] hover:text-white hover:bg-white/10 rounded-full"
             >
               Entrar
             </Button>
             <Button
               size="sm"
               render={<Link href="/cadastro" />}
-              className="bg-[#2D6A4F] text-white hover:bg-[#235540] rounded-lg"
+              className="bg-[#3A7D5A] text-white hover:bg-[#4EAF7A] rounded-full font-semibold"
             >
               Sou cliente
             </Button>
           </div>
         </div>
       </header>
+      <div className="h-20" aria-hidden="true" />
 
       {/* Hero */}
-      <section className="bg-white border-b border-[#E5D9BF] py-12">
+      <section className="bg-[#F5F5F5] border-b border-[#E5E5E5] py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <div className="inline-flex items-center gap-2 bg-[#4A90D9]/10 border border-[#4A90D9]/20 text-[#4A90D9] text-sm font-semibold px-3 py-1.5 rounded-full mb-4">
+            <div className="inline-flex items-center gap-2 bg-[#3A7D5A]/10 border border-[#3A7D5A]/20 text-[#3A7D5A] text-sm font-semibold px-3 py-1.5 rounded-full mb-4">
               <Calculator className="h-3.5 w-3.5" />
               Calculadora de Impacto
             </div>
             <h1
-              className="text-4xl font-bold text-[#1A1A1A] mb-2"
-              style={{ fontFamily: "var(--font-fraunces)" }}
+              className="text-4xl font-bold text-[#0A0A0A] mb-2"
+              style={{ fontFamily: "var(--font-dm-sans)" }}
             >
               Descubra o impacto do seu evento
             </h1>
-            <p className="text-[#6B7280] text-lg max-w-xl">
+            <p className="text-[#888888] text-lg max-w-xl">
               Estime o impacto ambiental positivo de realizar um evento
               sustentável com a Loopp.
             </p>
@@ -186,18 +182,18 @@ export default function CalculadoraPage() {
             initial={{ opacity: 0, x: -16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-white rounded-2xl p-7 shadow-[0_2px_16px_rgba(0,0,0,0.07)] border border-[#E5D9BF]"
+            className="bg-[#F5F5F5] rounded-2xl p-7 border border-[#E5E5E5]"
           >
             <h2
-              className="text-xl font-bold text-[#1A1A1A] mb-6"
-              style={{ fontFamily: "var(--font-fraunces)" }}
+              className="text-xl font-bold text-[#0A0A0A] mb-6"
+              style={{ fontFamily: "var(--font-dm-sans)" }}
             >
               Configure seu evento
             </h2>
 
             {/* Tipo de evento */}
             <div className="mb-6">
-              <label className="block text-sm font-semibold text-[#1A1A1A] mb-2">
+              <label className="block text-sm font-semibold text-[#0A0A0A] mb-2">
                 Tipo de evento
               </label>
               <div className="flex flex-wrap gap-2">
@@ -206,10 +202,10 @@ export default function CalculadoraPage() {
                     key={tipo}
                     type="button"
                     onClick={() => setTipoEvento(tipo)}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
+                    className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-colors ${
                       tipoEvento === tipo
-                        ? "bg-[#2D6A4F] text-white border-[#2D6A4F]"
-                        : "bg-white text-[#6B7280] border-[#E5D9BF] hover:border-[#2D6A4F]/40 hover:text-[#2D6A4F]"
+                        ? "bg-[#3A7D5A] text-white border-[#3A7D5A]"
+                        : "bg-transparent text-[#888888] border-[#E5E5E5] hover:border-[#3A7D5A]/40 hover:text-[#0A0A0A]"
                     }`}
                   >
                     {tipo}
@@ -221,7 +217,7 @@ export default function CalculadoraPage() {
             {/* Convidados */}
             <div className="mb-6">
               <div className="flex items-center justify-between mb-2">
-                <label className="text-sm font-semibold text-[#1A1A1A]">
+                <label className="text-sm font-semibold text-[#0A0A0A]">
                   Número de convidados
                 </label>
                 <input
@@ -230,7 +226,7 @@ export default function CalculadoraPage() {
                   max={5000}
                   value={convidadosInput}
                   onChange={(e) => handleConvidadosInput(e.target.value)}
-                  className="w-20 h-8 text-center text-sm font-bold border border-[#E5D9BF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2D6A4F]/30 text-[#1A1A1A]"
+                  className="w-20 h-8 text-center text-sm font-bold border border-[#E5E5E5] bg-white text-[#0A0A0A] rounded-full focus:outline-none focus:ring-2 focus:ring-[#3A7D5A]/30"
                 />
               </div>
               <input
@@ -242,10 +238,10 @@ export default function CalculadoraPage() {
                 onChange={(e) => handleSlider(Number(e.target.value))}
                 className="w-full h-2 rounded-full appearance-none cursor-pointer"
                 style={{
-                  background: `linear-gradient(to right, #2D6A4F ${((convidados - 10) / 4990) * 100}%, #E5D9BF ${((convidados - 10) / 4990) * 100}%)`,
+                  background: `linear-gradient(to right, #3A7D5A ${((convidados - 10) / 4990) * 100}%, #D0D0D0 ${((convidados - 10) / 4990) * 100}%)`,
                 }}
               />
-              <div className="flex justify-between text-xs text-[#6B7280] mt-1">
+              <div className="flex justify-between text-xs text-[#888888] mt-1">
                 <span>10</span>
                 <span>5.000</span>
               </div>
@@ -253,7 +249,7 @@ export default function CalculadoraPage() {
 
             {/* Toggles */}
             <div className="mb-7">
-              <p className="text-sm font-semibold text-[#1A1A1A] mb-3">
+              <p className="text-sm font-semibold text-[#0A0A0A] mb-3">
                 Necessidades do evento
               </p>
               <Toggle
@@ -275,7 +271,7 @@ export default function CalculadoraPage() {
 
             <Button
               render={<Link href={ctaHref} />}
-              className="w-full bg-[#2D6A4F] hover:bg-[#235540] text-white rounded-xl h-11 font-semibold text-sm"
+              className="w-full bg-[#3A7D5A] hover:bg-[#4EAF7A] text-white rounded-full h-11 font-semibold text-sm"
             >
               Ver planejamento completo
             </Button>
@@ -286,13 +282,13 @@ export default function CalculadoraPage() {
             initial={{ opacity: 0, x: 16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="bg-white rounded-2xl p-7 shadow-[0_2px_16px_rgba(45,106,79,0.1)] border-2 border-[#2D6A4F]/30 sticky top-24"
+            className="bg-[#F5F5F5] rounded-2xl p-7 border-2 border-[#3A7D5A]/30 sticky top-24"
           >
             <div className="flex items-center gap-2 mb-6">
-              <div className="w-2 h-2 rounded-full bg-[#2D6A4F] animate-pulse" />
+              <div className="w-2 h-2 rounded-full bg-[#3A7D5A] animate-pulse" />
               <h2
-                className="text-xl font-bold text-[#2D6A4F]"
-                style={{ fontFamily: "var(--font-fraunces)" }}
+                className="text-xl font-bold text-[#3A7D5A]"
+                style={{ fontFamily: "var(--font-dm-sans)" }}
               >
                 Seu impacto estimado
               </h2>
@@ -305,7 +301,7 @@ export default function CalculadoraPage() {
                 return (
                   <div
                     key={item.key}
-                    className="flex items-center gap-4 p-4 rounded-xl bg-[#F5EDD8] border border-[#E5D9BF]"
+                    className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-[#E5E5E5]"
                   >
                     <div
                       className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
@@ -314,11 +310,11 @@ export default function CalculadoraPage() {
                       <Icon className="h-5 w-5" style={{ color: item.cor }} />
                     </div>
                     <div className="flex-1">
-                      <p className="text-xs text-[#6B7280] mb-0.5">{item.label}</p>
+                      <p className="text-xs text-[#888888] mb-0.5">{item.label}</p>
                     </div>
                     <p
-                      className="text-2xl font-bold text-[#1A1A1A] tabular-nums"
-                      style={{ fontFamily: "var(--font-fraunces)" }}
+                      className="text-2xl font-bold text-[#0A0A0A] tabular-nums"
+                      style={{ fontFamily: "var(--font-dm-sans)" }}
                     >
                       {formatNum(valor)}
                     </p>
@@ -327,7 +323,7 @@ export default function CalculadoraPage() {
               })}
             </div>
 
-            <p className="text-xs text-[#6B7280] mt-5 leading-relaxed border-t border-[#E5D9BF] pt-4">
+            <p className="text-xs text-[#888888] mt-5 leading-relaxed border-t border-[#E5E5E5] pt-4">
               Estimativas baseadas em dados médios de eventos similares e no
               volume de material disponível nos fornecedores parceiros da Loopp.
             </p>
@@ -336,18 +332,18 @@ export default function CalculadoraPage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-[#E5D9BF] py-8 mt-6">
+      <footer className="bg-[#0A0A0A] rounded-t-[24px] py-8 mt-6">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex flex-col items-center sm:items-start gap-1">
             <Logo size="sm" />
-            <p className="text-sm text-[#6B7280]">Feche o ciclo do seu evento.</p>
+            <p className="text-sm text-[#888888]">Feche o ciclo do seu evento.</p>
           </div>
-          <nav className="flex items-center gap-5 text-sm text-[#6B7280]">
-            <Link href="/" className="hover:text-[#2D6A4F] transition-colors">Início</Link>
-            <Link href="/vitrine" className="hover:text-[#2D6A4F] transition-colors">Vitrine</Link>
-            <Link href="/cases" className="hover:text-[#2D6A4F] transition-colors">Cases</Link>
+          <nav className="flex items-center gap-5 text-sm text-[#888888]">
+            <Link href="/" className="hover:text-white transition-colors">Início</Link>
+            <Link href="/vitrine" className="hover:text-white transition-colors">Vitrine</Link>
+            <Link href="/cases" className="hover:text-white transition-colors">Cases</Link>
           </nav>
-          <p className="text-xs text-[#6B7280]/60">© 2026 Loopp</p>
+          <p className="text-xs text-[#888888]/40">© 2026 Loopp</p>
         </div>
       </footer>
     </div>

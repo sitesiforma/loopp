@@ -101,6 +101,19 @@ export interface CaseImpacto {
   itensResgatados: number;
 }
 
+export type Plano = "essencial" | "completo" | "premium";
+
+export interface NovoPedidoState {
+  tipoEvento: string;
+  plano: Plano | null;
+  nomeEvento: string;
+  data: string;
+  localizacao: string;
+  convidados: string;
+  orcamento: string;
+  descricao: string;
+}
+
 export interface EventoCase {
   slug: string;
   evento: string;
@@ -115,4 +128,5 @@ export interface EventoCase {
   autorDepoimento: string;
   corCard: string;
   fraseImpacto: string;
+  imagem?: string;
 }

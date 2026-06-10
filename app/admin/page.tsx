@@ -76,32 +76,32 @@ export default function AdminPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-[#F5EDD8] flex">
+    <div className="min-h-screen bg-white flex">
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-[#E5D9BF] flex flex-col fixed h-full z-40">
-        <div className="p-5 border-b border-[#E5D9BF]">
+      <aside className="w-64 bg-[#141414] border-r border-[#2A2A2A] flex flex-col fixed h-full z-40">
+        <div className="p-5 border-b border-[#2A2A2A]">
           <Logo size="md" href="/admin" />
         </div>
         <nav className="flex-1 p-4 space-y-1">
           <Link
             href="/admin"
-            className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-[#2D6A4F]/10 text-[#2D6A4F] font-semibold text-sm"
+            className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-[#3A7D5A]/10 text-[#3A7D5A] font-semibold text-sm"
           >
             <Package className="h-4 w-4" />
             Pedidos
           </Link>
           <Link
             href="/admin/fornecedores"
-            className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[#6B7280] hover:bg-[#F5EDD8] hover:text-[#1A1A1A] font-medium text-sm transition-colors"
+            className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[#888888] hover:bg-[#2A2A2A] hover:text-white font-medium text-sm transition-colors"
           >
             <Leaf className="h-4 w-4" />
             Fornecedores
           </Link>
         </nav>
-        <div className="p-4 border-t border-[#E5D9BF]">
+        <div className="p-4 border-t border-[#2A2A2A]">
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#1A1A1A] transition-colors w-full"
+            className="flex items-center gap-2 text-sm text-[#888888] hover:text-white transition-colors w-full"
           >
             <LogOut className="h-4 w-4" />
             Sair
@@ -119,17 +119,17 @@ export default function AdminPage() {
           <div className="flex items-center justify-between mb-7">
             <div>
               <h1
-                className="text-3xl font-bold text-[#1A1A1A]"
-                style={{ fontFamily: "var(--font-fraunces)" }}
+                className="text-3xl font-bold text-[#0A0A0A]"
+                style={{ fontFamily: "var(--font-dm-sans)" }}
               >
                 Pedidos
               </h1>
-              <p className="text-[#6B7280] mt-1 text-sm">
+              <p className="text-[#888888] mt-1 text-sm">
                 {pedidosFiltrados.length} pedido{pedidosFiltrados.length !== 1 ? "s" : ""} encontrado{pedidosFiltrados.length !== 1 ? "s" : ""}
               </p>
             </div>
-            <div className="flex items-center gap-2 text-xs text-[#6B7280] bg-white border border-[#E5D9BF] px-3 py-1.5 rounded-lg">
-              <span className="w-2 h-2 rounded-full bg-[#2D6A4F]" />
+            <div className="flex items-center gap-2 text-xs text-[#888888] bg-[#F5F5F5] border border-[#E5E5E5] px-3 py-1.5 rounded-full">
+              <span className="w-2 h-2 rounded-full bg-[#3A7D5A]" />
               Admin: {user.nome}
             </div>
           </div>
@@ -140,7 +140,7 @@ export default function AdminPage() {
               onValueChange={(v) => setFiltroStatus(v as StatusPedido | "todos")}
               defaultValue="todos"
             >
-              <SelectTrigger className="w-52 bg-white border-[#E5D9BF] rounded-lg h-10 text-sm">
+              <SelectTrigger className="w-52 bg-white border-[#E5E5E5] text-[#0A0A0A] rounded-full h-10 text-sm">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -154,7 +154,7 @@ export default function AdminPage() {
               onValueChange={(v) => setFiltroTipo(v as TipoEvento | "todos")}
               defaultValue="todos"
             >
-              <SelectTrigger className="w-48 bg-white border-[#E5D9BF] rounded-lg h-10 text-sm">
+              <SelectTrigger className="w-48 bg-white border-[#E5E5E5] text-[#0A0A0A] rounded-full h-10 text-sm">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -166,40 +166,40 @@ export default function AdminPage() {
           </div>
 
           {/* Tabela */}
-          <Card className="bg-white border-[#E5D9BF] rounded-2xl shadow-[0_2px_16px_rgba(0,0,0,0.05)] overflow-hidden">
+          <Card className="bg-[#F5F5F5] border-[#E5E5E5] rounded-2xl overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-[#E5D9BF] bg-[#F5EDD8]/60">
-                    <th className="text-left px-5 py-3.5 font-semibold text-[#6B7280] text-xs uppercase tracking-wider">Cliente</th>
-                    <th className="text-left px-5 py-3.5 font-semibold text-[#6B7280] text-xs uppercase tracking-wider">Evento</th>
-                    <th className="text-left px-5 py-3.5 font-semibold text-[#6B7280] text-xs uppercase tracking-wider">Tipo</th>
-                    <th className="text-left px-5 py-3.5 font-semibold text-[#6B7280] text-xs uppercase tracking-wider">Data</th>
-                    <th className="text-left px-5 py-3.5 font-semibold text-[#6B7280] text-xs uppercase tracking-wider">Orçamento</th>
-                    <th className="text-left px-5 py-3.5 font-semibold text-[#6B7280] text-xs uppercase tracking-wider">Status</th>
+                  <tr className="border-b border-[#E5E5E5] bg-white">
+                    <th className="text-left px-5 py-3.5 font-semibold text-[#888888] text-xs uppercase tracking-wider">Cliente</th>
+                    <th className="text-left px-5 py-3.5 font-semibold text-[#888888] text-xs uppercase tracking-wider">Evento</th>
+                    <th className="text-left px-5 py-3.5 font-semibold text-[#888888] text-xs uppercase tracking-wider">Tipo</th>
+                    <th className="text-left px-5 py-3.5 font-semibold text-[#888888] text-xs uppercase tracking-wider">Data</th>
+                    <th className="text-left px-5 py-3.5 font-semibold text-[#888888] text-xs uppercase tracking-wider">Orçamento</th>
+                    <th className="text-left px-5 py-3.5 font-semibold text-[#888888] text-xs uppercase tracking-wider">Status</th>
                     <th className="px-5 py-3.5" />
                   </tr>
                 </thead>
                 <tbody>
                   {pedidosFiltrados.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className="text-center py-16 text-[#6B7280]">
+                      <td colSpan={7} className="text-center py-16 text-[#888888]">
                         Nenhum pedido encontrado com os filtros selecionados.
                       </td>
                     </tr>
                   ) : (
-                    pedidosFiltrados.map((pedido, i) => (
+                    pedidosFiltrados.map((pedido) => (
                       <tr
                         key={pedido.id}
-                        className="border-b border-[#E5D9BF]/50 hover:bg-[#F5EDD8]/40 transition-colors"
+                        className="border-b border-[#E5E5E5] hover:bg-white transition-colors"
                       >
-                        <td className="px-5 py-4 font-medium text-[#1A1A1A]">{pedido.clienteNome}</td>
-                        <td className="px-5 py-4 text-[#1A1A1A] max-w-[200px]">
+                        <td className="px-5 py-4 font-medium text-[#0A0A0A]">{pedido.clienteNome}</td>
+                        <td className="px-5 py-4 text-[#0A0A0A] max-w-[200px]">
                           <span className="line-clamp-1">{pedido.nomeEvento}</span>
                         </td>
-                        <td className="px-5 py-4 text-[#6B7280]">{pedido.tipoEvento}</td>
-                        <td className="px-5 py-4 text-[#6B7280] whitespace-nowrap">{formatDate(pedido.dataEvento)}</td>
-                        <td className="px-5 py-4 text-[#6B7280]">{pedido.orcamento}</td>
+                        <td className="px-5 py-4 text-[#888888]">{pedido.tipoEvento}</td>
+                        <td className="px-5 py-4 text-[#888888] whitespace-nowrap">{formatDate(pedido.dataEvento)}</td>
+                        <td className="px-5 py-4 text-[#888888]">{pedido.orcamento}</td>
                         <td className="px-5 py-4">
                           <StatusBadge status={pedido.status} />
                         </td>
@@ -208,7 +208,7 @@ export default function AdminPage() {
                             variant="outline"
                             size="sm"
                             render={<Link href={`/admin/pedido/${pedido.id}`} />}
-                            className="border-[#2D6A4F]/30 text-[#2D6A4F] hover:bg-[#2D6A4F]/5 rounded-lg whitespace-nowrap"
+                            className="border-[#3A7D5A]/30 text-[#3A7D5A] hover:bg-[#3A7D5A]/10 rounded-full whitespace-nowrap"
                           >
                             Ver / Gerenciar
                           </Button>

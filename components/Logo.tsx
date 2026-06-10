@@ -6,63 +6,27 @@ interface LogoProps {
   size?: "sm" | "md" | "lg";
   href?: string;
   variant?: "default" | "white";
+  dark?: boolean;
 }
 
-export default function Logo({ size = "md", href = "/", variant = "default" }: LogoProps) {
+export default function Logo({ size = "md", href = "/", dark = false }: LogoProps) {
   const sizes = {
     sm: "text-xl",
     md: "text-2xl",
     lg: "text-4xl",
   };
 
-  const color = variant === "white" ? "#FFFFFF" : "#2D6A4F";
-
   return (
-    <Link href={href} className="inline-flex items-center group select-none">
+    <Link
+      href={href}
+      className="inline-flex items-center select-none"
+      aria-label="Loopp — página inicial"
+    >
       <span
-        className={`font-bold tracking-tight ${sizes[size]}`}
-        style={{ fontFamily: "var(--font-fraunces)", color }}
+        className={`${sizes[size]} ${dark ? "text-[#0A0A0A]" : "text-white"}`}
+        style={{ fontFamily: "var(--font-dm-sans)", fontWeight: 800, letterSpacing: "-0.025em" }}
       >
-        Loo
-      </span>
-      <span className="relative inline-flex items-center">
-        <svg
-          viewBox="0 0 40 20"
-          className={size === "sm" ? "h-5 w-8" : size === "md" ? "h-6 w-10" : "h-9 w-14"}
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <text
-            x="0"
-            y="17"
-            style={{
-              fontFamily: "var(--font-fraunces)",
-              fontWeight: 700,
-              fontSize: size === "sm" ? 16 : size === "md" ? 19 : 28,
-              fill: color,
-            }}
-          >
-            pp
-          </text>
-          <path
-            d="M28 4 Q35 0 38 8 Q41 16 34 18"
-            stroke={color}
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            fill="none"
-            opacity="0.6"
-          />
-          <polyline
-            points="34,14 34,18 38,18"
-            stroke={color}
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            fill="none"
-            opacity="0.6"
-          />
-        </svg>
+        Loo<span style={{ color: "#3A7D5A" }}>pp</span>
       </span>
     </Link>
   );

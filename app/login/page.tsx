@@ -41,31 +41,56 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5EDD8] flex flex-col items-center justify-center px-4">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="w-full max-w-md"
-      >
-        <div className="flex justify-center mb-8">
-          <Logo size="lg" />
+    <div className="min-h-screen bg-white flex">
+      {/* Painel esquerdo — imagem */}
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-[#111111]">
+        <img
+          src="https://images.unsplash.com/photo-1519741347686-99eda95cc0ec?auto=format&fit=crop&w=900&q=75"
+          alt="Evento sustentável"
+          className="absolute inset-0 w-full h-full object-cover opacity-50"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0A]/80 via-[#0A0A0A]/40 to-[#3A7D5A]/20" />
+        <div className="relative z-10 flex flex-col justify-between p-10 h-full">
+          <Logo size="md" />
+          <div>
+            <p
+              className="text-3xl font-bold text-white leading-snug mb-4"
+              style={{ fontFamily: "var(--font-dm-sans)" }}
+            >
+              Celebrar não precisa custar ao planeta.
+            </p>
+            <p className="text-white/50 text-sm">
+              Conectamos você a fornecedores sustentáveis e montamos um plano completo para o seu evento.
+            </p>
+          </div>
         </div>
+      </div>
 
-        <Card className="p-8 bg-white shadow-[0_2px_16px_rgba(0,0,0,0.07)] border-[#E5D9BF] rounded-2xl">
+      {/* Painel direito — formulário */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="w-full max-w-sm"
+        >
+          <div className="flex justify-center mb-8 lg:hidden">
+            <Logo size="lg" dark />
+          </div>
+
           <h1
-            className="text-2xl font-bold text-[#1A1A1A] mb-1 text-center"
-            style={{ fontFamily: "var(--font-fraunces)" }}
+            className="text-2xl font-bold text-[#0A0A0A] mb-1"
+            style={{ fontFamily: "var(--font-dm-sans)" }}
           >
             Entrar na plataforma
           </h1>
-          <p className="text-sm text-[#6B7280] text-center mb-7">
+          <p className="text-sm text-[#888888] mb-7">
             Acesse sua conta para gerenciar seus eventos.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <Label htmlFor="email" className="text-sm font-medium text-[#1A1A1A]">
+              <Label htmlFor="email" className="text-sm font-medium text-[#0A0A0A]">
                 E-mail
               </Label>
               <Input
@@ -74,12 +99,12 @@ export default function LoginPage() {
                 placeholder="seu@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="border-[#E5D9BF] focus:border-[#2D6A4F] focus:ring-[#2D6A4F] rounded-lg h-11"
+                className="border-[#E5E5E5] bg-white text-[#0A0A0A] placeholder:text-[#888888]/60 focus:border-[#3A7D5A] rounded-full h-11"
               />
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="senha" className="text-sm font-medium text-[#1A1A1A]">
+              <Label htmlFor="senha" className="text-sm font-medium text-[#0A0A0A]">
                 Senha
               </Label>
               <Input
@@ -88,31 +113,31 @@ export default function LoginPage() {
                 placeholder="••••••••"
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
-                className="border-[#E5D9BF] focus:border-[#2D6A4F] focus:ring-[#2D6A4F] rounded-lg h-11"
+                className="border-[#E5E5E5] bg-white text-[#0A0A0A] placeholder:text-[#888888]/60 focus:border-[#3A7D5A] rounded-full h-11"
               />
             </div>
 
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#2D6A4F] hover:bg-[#235540] text-white rounded-xl h-11 font-semibold mt-2"
+              className="w-full bg-[#3A7D5A] hover:bg-[#4EAF7A] text-white rounded-full h-11 font-semibold mt-2"
             >
               {loading ? "Entrando..." : "Entrar"}
             </Button>
           </form>
 
-          <p className="text-center text-sm text-[#6B7280] mt-6">
+          <p className="text-sm text-[#888888] mt-6">
             Não tem conta?{" "}
-            <Link href="/cadastro" className="text-[#2D6A4F] font-semibold hover:underline">
+            <Link href="/cadastro" className="text-[#3A7D5A] font-semibold hover:text-[#4EAF7A]">
               Cadastre-se
             </Link>
           </p>
-        </Card>
 
-        <p className="text-center text-xs text-[#6B7280]/60 mt-4">
-          Admin: admin@loopp.com / admin123
-        </p>
-      </motion.div>
+          <p className="text-xs text-[#888888]/40 mt-8">
+            Admin: admin@loopp.com / admin123
+          </p>
+        </motion.div>
+      </div>
     </div>
   );
 }

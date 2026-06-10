@@ -59,17 +59,17 @@ export default function Stepper({ statusAtual, historico }: StepperProps) {
           <div key={step.status} className="flex">
             <div className="flex flex-col items-center">
               {isDone ? (
-                <CheckCircle2 className="h-6 w-6 shrink-0 text-[#2D6A4F]" />
+                <CheckCircle2 className="h-6 w-6 shrink-0 text-[#3A7D5A]" />
               ) : isCurrent ? (
-                <Clock className="h-6 w-6 shrink-0 text-[#4A90D9]" />
+                <Clock className="h-6 w-6 shrink-0 text-[#3A7D5A]" />
               ) : (
-                <Circle className="h-6 w-6 shrink-0 text-[#6B7280]/40" />
+                <Circle className="h-6 w-6 shrink-0 text-[#888888]/40" />
               )}
               {index < steps.length - 1 && (
                 <div
                   className={cn(
                     "w-px grow my-1",
-                    isDone ? "bg-[#2D6A4F]" : "bg-[#E5D9BF]"
+                    isDone ? "bg-[#3A7D5A]" : "bg-[#E5E5E5]"
                   )}
                 />
               )}
@@ -79,21 +79,21 @@ export default function Stepper({ statusAtual, historico }: StepperProps) {
                 className={cn(
                   "text-sm font-semibold",
                   isCurrent
-                    ? "text-[#4A90D9]"
+                    ? "text-[#3A7D5A]"
                     : isDone
-                    ? "text-[#2D6A4F]"
-                    : "text-[#6B7280]/60"
+                    ? "text-[#3A7D5A]"
+                    : "text-[#0A0A0A]/30"
                 )}
               >
                 {step.label}
               </p>
               {histEntry && (
-                <p className="text-xs text-[#6B7280] mt-0.5">
+                <p className="text-xs text-[#888888] mt-0.5">
                   {formatDate(histEntry.data)}
                 </p>
               )}
               {!histEntry && (
-                <p className="text-xs text-[#6B7280]/50 mt-0.5">Pendente</p>
+                <p className="text-xs text-[#888888]/50 mt-0.5">Pendente</p>
               )}
             </div>
           </div>

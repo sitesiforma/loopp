@@ -8,7 +8,6 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -68,77 +67,103 @@ export default function CadastroPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5EDD8] flex flex-col items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-white flex">
+      {/* Painel esquerdo — imagem */}
+      <div className="hidden lg:flex lg:w-[45%] relative overflow-hidden bg-[#111111]">
+        <img
+          src="https://images.unsplash.com/photo-1540575467-a5e0e9d6a76c?auto=format&fit=crop&w=900&q=75"
+          alt="Festival sustentável"
+          className="absolute inset-0 w-full h-full object-cover opacity-45"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0A]/80 via-[#0A0A0A]/30 to-[#3A7D5A]/20" />
+        <div className="relative z-10 flex flex-col justify-between p-10 h-full">
+          <Logo size="md" />
+          <div>
+            <p
+              className="text-3xl font-bold text-white leading-snug mb-4"
+              style={{ fontFamily: "var(--font-dm-sans)" }}
+            >
+              Seu evento começa aqui.
+            </p>
+            <p className="text-white/50 text-sm">
+              Acesse a rede de fornecedores sustentáveis e monte um plano personalizado para o seu evento.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Painel direito — formulário */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 overflow-y-auto">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="w-full max-w-md"
+        className="w-full max-w-sm"
       >
-        <div className="flex justify-center mb-8">
-          <Logo size="lg" />
+        <div className="flex justify-center mb-8 lg:hidden">
+          <Logo size="lg" dark />
         </div>
 
-        <Card className="p-8 bg-white shadow-[0_2px_16px_rgba(0,0,0,0.07)] border-[#E5D9BF] rounded-2xl">
-          <h1
-            className="text-2xl font-bold text-[#1A1A1A] mb-1 text-center"
-            style={{ fontFamily: "var(--font-fraunces)" }}
-          >
-            Criar sua conta
-          </h1>
-          <p className="text-sm text-[#6B7280] text-center mb-7">
-            Comece a planejar eventos sustentáveis.
-          </p>
+        <h1
+          className="text-2xl font-bold text-[#0A0A0A] mb-1"
+          style={{ fontFamily: "var(--font-dm-sans)" }}
+        >
+          Criar sua conta
+        </h1>
+        <p className="text-sm text-[#888888] mb-7">
+          Comece a planejar eventos sustentáveis.
+        </p>
 
+        <div className="space-y-0">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <Label className="text-sm font-medium text-[#1A1A1A]">Nome completo *</Label>
+              <Label className="text-sm font-medium text-[#0A0A0A]">Nome completo *</Label>
               <Input
                 placeholder="Seu nome"
                 value={form.nome}
                 onChange={(e) => update("nome", e.target.value)}
-                className="border-[#E5D9BF] rounded-lg h-11"
+                className="border-[#E5E5E5] bg-white text-[#0A0A0A] placeholder:text-[#888888]/60 rounded-full h-11"
               />
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-sm font-medium text-[#1A1A1A]">E-mail *</Label>
+              <Label className="text-sm font-medium text-[#0A0A0A]">E-mail *</Label>
               <Input
                 type="email"
                 placeholder="seu@email.com"
                 value={form.email}
                 onChange={(e) => update("email", e.target.value)}
-                className="border-[#E5D9BF] rounded-lg h-11"
+                className="border-[#E5E5E5] bg-white text-[#0A0A0A] placeholder:text-[#888888]/60 rounded-full h-11"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <Label className="text-sm font-medium text-[#1A1A1A]">Senha *</Label>
+                <Label className="text-sm font-medium text-[#0A0A0A]">Senha *</Label>
                 <Input
                   type="password"
                   placeholder="••••••"
                   value={form.senha}
                   onChange={(e) => update("senha", e.target.value)}
-                  className="border-[#E5D9BF] rounded-lg h-11"
+                  className="border-[#E5E5E5] bg-white text-[#0A0A0A] placeholder:text-[#888888]/60 rounded-full h-11"
                 />
               </div>
               <div className="space-y-1.5">
-                <Label className="text-sm font-medium text-[#1A1A1A]">Confirmar *</Label>
+                <Label className="text-sm font-medium text-[#0A0A0A]">Confirmar *</Label>
                 <Input
                   type="password"
                   placeholder="••••••"
                   value={form.confirmarSenha}
                   onChange={(e) => update("confirmarSenha", e.target.value)}
-                  className="border-[#E5D9BF] rounded-lg h-11"
+                  className="border-[#E5E5E5] bg-white text-[#0A0A0A] placeholder:text-[#888888]/60 rounded-full h-11"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-sm font-medium text-[#1A1A1A]">Tipo de conta *</Label>
+              <Label className="text-sm font-medium text-[#0A0A0A]">Tipo de conta *</Label>
               <Select onValueChange={(v) => update("tipoConta", v as string)}>
-                <SelectTrigger className="border-[#E5D9BF] rounded-lg h-11">
+                <SelectTrigger className="border-[#E5E5E5] bg-white text-[#0A0A0A] rounded-full h-11">
                   <SelectValue placeholder="Selecione" />
                 </SelectTrigger>
                 <SelectContent>
@@ -154,12 +179,12 @@ export default function CadastroPage() {
                 animate={{ opacity: 1, height: "auto" }}
                 className="space-y-1.5"
               >
-                <Label className="text-sm font-medium text-[#1A1A1A]">Nome da empresa *</Label>
+                <Label className="text-sm font-medium text-[#0A0A0A]">Nome da empresa *</Label>
                 <Input
                   placeholder="Razão social ou nome fantasia"
                   value={form.empresa}
                   onChange={(e) => update("empresa", e.target.value)}
-                  className="border-[#E5D9BF] rounded-lg h-11"
+                  className="border-[#E5E5E5] bg-white text-[#0A0A0A] placeholder:text-[#888888]/60 rounded-full h-11"
                 />
               </motion.div>
             )}
@@ -167,20 +192,21 @@ export default function CadastroPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#2D6A4F] hover:bg-[#235540] text-white rounded-xl h-11 font-semibold mt-2"
+              className="w-full bg-[#3A7D5A] hover:bg-[#4EAF7A] text-white rounded-full h-11 font-semibold mt-2"
             >
               {loading ? "Criando conta..." : "Criar conta"}
             </Button>
           </form>
 
-          <p className="text-center text-sm text-[#6B7280] mt-6">
+          <p className="text-sm text-[#888888] mt-6">
             Já tem conta?{" "}
-            <Link href="/login" className="text-[#2D6A4F] font-semibold hover:underline">
+            <Link href="/login" className="text-[#3A7D5A] font-semibold hover:text-[#4EAF7A]">
               Entrar
             </Link>
           </p>
-        </Card>
+        </div>
       </motion.div>
+      </div>
     </div>
   );
 }

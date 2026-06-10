@@ -247,6 +247,7 @@ export const CASES_MOCK: EventoCase[] = [
     autorDepoimento: "Equipe Misci",
     corCard: "#4A90D9",
     fraseImpacto: "340 kg de material reaproveitado",
+    imagem: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80",
   },
   {
     slug: "afropunk-rio-2024",
@@ -270,6 +271,7 @@ export const CASES_MOCK: EventoCase[] = [
     autorDepoimento: "Direção de Produção Afropunk Brasil",
     corCard: "#2D6A4F",
     fraseImpacto: "2.800 kg de material reaproveitado",
+    imagem: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=900&q=80",
   },
   {
     slug: "casamento-santa-teresa",
@@ -293,6 +295,7 @@ export const CASES_MOCK: EventoCase[] = [
     autorDepoimento: "Fernanda",
     corCard: "#F9E784",
     fraseImpacto: "180 kg de material reaproveitado",
+    imagem: "https://images.unsplash.com/photo-1519225421880-453fee844ee0?auto=format&fit=crop&w=900&q=80",
   },
 ];
 

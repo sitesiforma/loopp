@@ -72,22 +72,22 @@ const TIPOS_EVENTO: TipoEvento[] = [
 
 const COR_CATEGORIA_VITRINE: Record<CategoriaVitrine, string> = {
   Figurino: "#F9E784",
-  "Resíduos Têxteis": "#4A90D9",
-  Cenografia: "#2D6A4F",
+  "Resíduos Têxteis": "#3A7D5A",
+  Cenografia: "#3A7D5A",
   Adereços: "#F9E784",
-  Energia: "#2D6A4F",
-  Logística: "#4A90D9",
+  Energia: "#3A7D5A",
+  Logística: "#3A7D5A",
   Decoração: "#F9E784",
 };
 
 const CATEGORIA_CORES: Record<CategoriaFornecedor, string> = {
-  "Resíduos Têxteis": "bg-purple-100 text-purple-700 border-purple-200",
-  "Confecção Sustentável": "bg-pink-100 text-pink-700 border-pink-200",
-  "Energia Renovável": "bg-yellow-100 text-yellow-700 border-yellow-200",
-  "Cenografia Sustentável": "bg-green-100 text-green-700 border-green-200",
-  "Logística Verde": "bg-blue-100 text-blue-700 border-blue-200",
-  Alimentação: "bg-orange-100 text-orange-700 border-orange-200",
-  Outro: "bg-gray-100 text-gray-700 border-gray-200",
+  "Resíduos Têxteis": "bg-purple-900/30 text-purple-300 border-purple-800/40",
+  "Confecção Sustentável": "bg-pink-900/30 text-pink-300 border-pink-800/40",
+  "Energia Renovável": "bg-yellow-900/30 text-[#F9E784] border-yellow-800/40",
+  "Cenografia Sustentável": "bg-[#3A7D5A]/15 text-[#4EAF7A] border-[#3A7D5A]/30",
+  "Logística Verde": "bg-blue-900/30 text-blue-300 border-blue-800/40",
+  Alimentação: "bg-orange-900/30 text-orange-300 border-orange-800/40",
+  Outro: "bg-[#F0F0F0] text-[#888888] border-[#D0D0D0]",
 };
 
 const EMPTY_FORM = {
@@ -114,7 +114,6 @@ export default function FornecedoresPage() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
 
-  // State para materiais dentro do modal
   const [materiaisLocais, setMateriaisLocais] = useState<Material[]>([]);
   const [addingMaterial, setAddingMaterial] = useState(false);
   const [materialDraft, setMaterialDraft] = useState(EMPTY_MATERIAL_DRAFT);
@@ -198,7 +197,7 @@ export default function FornecedoresPage() {
       categoria: materialDraft.categoria as CategoriaVitrine,
       tiposEvento: materialDraft.tiposEvento,
       descricao: materialDraft.descricao,
-      cor: COR_CATEGORIA_VITRINE[materialDraft.categoria as CategoriaVitrine] ?? "#4A90D9",
+      cor: COR_CATEGORIA_VITRINE[materialDraft.categoria as CategoriaVitrine] ?? "#3A7D5A",
     };
     setMateriaisLocais((prev) => [...prev, novoMaterial]);
     setMaterialDraft(EMPTY_MATERIAL_DRAFT);
@@ -267,32 +266,32 @@ export default function FornecedoresPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-[#F5EDD8] flex">
+    <div className="min-h-screen bg-white flex">
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-[#E5D9BF] flex flex-col fixed h-full z-40">
-        <div className="p-5 border-b border-[#E5D9BF]">
+      <aside className="w-64 bg-[#141414] border-r border-[#2A2A2A] flex flex-col fixed h-full z-40">
+        <div className="p-5 border-b border-[#2A2A2A]">
           <Logo size="md" href="/admin" />
         </div>
         <nav className="flex-1 p-4 space-y-1">
           <Link
             href="/admin"
-            className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[#6B7280] hover:bg-[#F5EDD8] hover:text-[#1A1A1A] font-medium text-sm transition-colors"
+            className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[#888888] hover:bg-[#2A2A2A] hover:text-white font-medium text-sm transition-colors"
           >
             <Package className="h-4 w-4" />
             Pedidos
           </Link>
           <Link
             href="/admin/fornecedores"
-            className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-[#2D6A4F]/10 text-[#2D6A4F] font-semibold text-sm"
+            className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-[#3A7D5A]/10 text-[#3A7D5A] font-semibold text-sm"
           >
             <Leaf className="h-4 w-4" />
             Fornecedores
           </Link>
         </nav>
-        <div className="p-4 border-t border-[#E5D9BF]">
+        <div className="p-4 border-t border-[#2A2A2A]">
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#1A1A1A] transition-colors w-full"
+            className="flex items-center gap-2 text-sm text-[#888888] hover:text-white transition-colors w-full"
           >
             <LogOut className="h-4 w-4" />
             Sair
@@ -310,12 +309,12 @@ export default function FornecedoresPage() {
           <div className="flex items-center justify-between mb-7">
             <div>
               <h1
-                className="text-3xl font-bold text-[#1A1A1A]"
-                style={{ fontFamily: "var(--font-fraunces)" }}
+                className="text-3xl font-bold text-[#0A0A0A]"
+                style={{ fontFamily: "var(--font-dm-sans)" }}
               >
                 Fornecedores
               </h1>
-              <p className="text-[#6B7280] mt-1 text-sm">
+              <p className="text-[#888888] mt-1 text-sm">
                 {fornecedores.length} fornecedor
                 {fornecedores.length !== 1 ? "es" : ""} cadastrado
                 {fornecedores.length !== 1 ? "s" : ""}
@@ -323,7 +322,7 @@ export default function FornecedoresPage() {
             </div>
             <Button
               onClick={openAdd}
-              className="bg-[#2D6A4F] hover:bg-[#235540] text-white rounded-xl gap-2 shadow-sm"
+              className="bg-[#3A7D5A] hover:bg-[#4EAF7A] text-white rounded-full gap-2 font-semibold"
             >
               <Plus className="h-4 w-4" />
               Adicionar Fornecedor
@@ -340,9 +339,9 @@ export default function FornecedoresPage() {
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ delay: i * 0.04 }}
                 >
-                  <Card className="p-5 bg-white border-[#E5D9BF] rounded-2xl shadow-[0_2px_16px_rgba(0,0,0,0.05)] hover:shadow-md transition-shadow h-full flex flex-col">
+                  <Card className="p-5 bg-[#F5F5F5] border-[#E5E5E5] rounded-2xl hover:border-[#3A7D5A]/30 transition-colors h-full flex flex-col">
                     <div className="flex items-start justify-between gap-2 mb-3">
-                      <h3 className="font-semibold text-[#1A1A1A] leading-tight">
+                      <h3 className="font-semibold text-[#0A0A0A] leading-tight">
                         {f.nome}
                       </h3>
                       <span
@@ -351,16 +350,16 @@ export default function FornecedoresPage() {
                         {f.categoria}
                       </span>
                     </div>
-                    <p className="text-sm text-[#6B7280] leading-relaxed mb-3 flex-1">
+                    <p className="text-sm text-[#888888] leading-relaxed mb-3 flex-1">
                       {f.descricao}
                     </p>
-                    <p className="text-xs text-[#2D6A4F] mb-3">{f.contato}</p>
+                    <p className="text-xs text-[#3A7D5A] mb-3">{f.contato}</p>
                     {f.tags.length > 0 && (
                       <div className="flex flex-wrap gap-1.5 mb-3">
                         {f.tags.map((tag) => (
                           <span
                             key={tag}
-                            className="text-xs bg-[#F9E784]/60 text-[#7A6800] px-2 py-0.5 rounded-full border border-[#E8D04A]/30"
+                            className="text-xs bg-[#3A7D5A]/8 text-[#3A7D5A] px-2 py-0.5 rounded-full border border-[#3A7D5A]/20"
                           >
                             {tag}
                           </span>
@@ -368,7 +367,7 @@ export default function FornecedoresPage() {
                       </div>
                     )}
                     {(f.materiais?.length ?? 0) > 0 && (
-                      <p className="text-xs text-[#6B7280] mb-3">
+                      <p className="text-xs text-[#888888] mb-3">
                         {f.materiais!.length} material
                         {f.materiais!.length !== 1 ? "is" : ""} na vitrine
                       </p>
@@ -378,7 +377,7 @@ export default function FornecedoresPage() {
                         variant="outline"
                         size="sm"
                         onClick={() => openEdit(f)}
-                        className="flex-1 border-[#E5D9BF] text-[#6B7280] hover:text-[#1A1A1A] rounded-lg gap-1"
+                        className="flex-1 border-[#E5E5E5] text-[#888888] hover:text-[#0A0A0A] hover:border-[#3A7D5A]/40 rounded-full gap-1"
                       >
                         <Pencil className="h-3.5 w-3.5" /> Editar
                       </Button>
@@ -386,7 +385,7 @@ export default function FornecedoresPage() {
                         variant="outline"
                         size="sm"
                         onClick={() => handleRemoveFornecedor(f.id)}
-                        className="border-red-200 text-red-400 hover:bg-red-50 hover:text-red-600 rounded-lg gap-1"
+                        className="border-red-900/40 text-red-400 hover:bg-red-900/20 hover:text-red-300 rounded-full gap-1"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </Button>
@@ -401,104 +400,96 @@ export default function FornecedoresPage() {
 
       {/* Modal */}
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-        <DialogContent className="bg-white border-[#E5D9BF] rounded-2xl max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-white border-[#E5E5E5] rounded-2xl max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle style={{ fontFamily: "var(--font-fraunces)" }}>
+            <DialogTitle
+              className="text-[#0A0A0A]"
+              style={{ fontFamily: "var(--font-dm-sans)" }}
+            >
               {editando ? "Editar fornecedor" : "Novo fornecedor"}
             </DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4 pt-2">
-            {/* Dados do fornecedor */}
             <div className="space-y-1.5">
-              <Label className="font-medium text-[#1A1A1A] text-sm">
+              <Label className="font-medium text-[#0A0A0A] text-sm">
                 Nome da empresa *
               </Label>
               <Input
                 placeholder="Ex: EcoFest Energia"
                 value={form.nome}
                 onChange={(e) => setForm((f) => ({ ...f, nome: e.target.value }))}
-                className="border-[#E5D9BF] rounded-lg h-10"
+                className="border-[#E5E5E5] bg-white text-[#0A0A0A] placeholder:text-[#888888]/60 rounded-full h-10"
               />
             </div>
 
             <div className="space-y-1.5">
-              <Label className="font-medium text-[#1A1A1A] text-sm">Categoria *</Label>
+              <Label className="font-medium text-[#0A0A0A] text-sm">Categoria *</Label>
               <Select
                 value={form.categoria}
                 onValueChange={(v) =>
                   setForm((f) => ({ ...f, categoria: v as CategoriaFornecedor }))
                 }
               >
-                <SelectTrigger className="border-[#E5D9BF] rounded-lg h-10">
+                <SelectTrigger className="border-[#E5E5E5] bg-white text-[#0A0A0A] rounded-full h-10">
                   <SelectValue placeholder="Selecione" />
                 </SelectTrigger>
                 <SelectContent>
                   {CATEGORIAS.map((c) => (
-                    <SelectItem key={c} value={c}>
-                      {c}
-                    </SelectItem>
+                    <SelectItem key={c} value={c}>{c}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-1.5">
-              <Label className="font-medium text-[#1A1A1A] text-sm">Descrição *</Label>
+              <Label className="font-medium text-[#0A0A0A] text-sm">Descrição *</Label>
               <Textarea
                 placeholder="Descreva o que o fornecedor oferece"
                 value={form.descricao}
-                onChange={(e) =>
-                  setForm((f) => ({ ...f, descricao: e.target.value }))
-                }
-                className="border-[#E5D9BF] rounded-lg min-h-[80px] resize-none"
+                onChange={(e) => setForm((f) => ({ ...f, descricao: e.target.value }))}
+                className="border-[#E5E5E5] bg-white text-[#0A0A0A] placeholder:text-[#888888]/60 rounded-2xl min-h-[80px] resize-none"
               />
             </div>
 
             <div className="space-y-1.5">
-              <Label className="font-medium text-[#1A1A1A] text-sm">Contato *</Label>
+              <Label className="font-medium text-[#0A0A0A] text-sm">Contato *</Label>
               <Input
                 placeholder="email@fornecedor.com ou (11) 99999-9999"
                 value={form.contato}
-                onChange={(e) =>
-                  setForm((f) => ({ ...f, contato: e.target.value }))
-                }
-                className="border-[#E5D9BF] rounded-lg h-10"
+                onChange={(e) => setForm((f) => ({ ...f, contato: e.target.value }))}
+                className="border-[#E5E5E5] bg-white text-[#0A0A0A] placeholder:text-[#888888]/60 rounded-full h-10"
               />
             </div>
 
             <div className="space-y-1.5">
-              <Label className="font-medium text-[#1A1A1A] text-sm">
+              <Label className="font-medium text-[#0A0A0A] text-sm">
                 Tags{" "}
-                <span className="text-[#6B7280] font-normal">
-                  (separadas por vírgula)
-                </span>
+                <span className="text-[#888888] font-normal">(separadas por vírgula)</span>
               </Label>
               <Input
                 placeholder="solar, eventos, reciclagem"
                 value={form.tags}
                 onChange={(e) => setForm((f) => ({ ...f, tags: e.target.value }))}
-                className="border-[#E5D9BF] rounded-lg h-10"
+                className="border-[#E5E5E5] bg-white text-[#0A0A0A] placeholder:text-[#888888]/60 rounded-full h-10"
               />
             </div>
 
             {/* Seção de materiais */}
-            <div className="border-t border-[#E5D9BF] pt-4">
+            <div className="border-t border-[#E5E5E5] pt-4">
               <button
                 type="button"
                 onClick={() => setMateriaisExpanded((v) => !v)}
-                className="flex items-center justify-between w-full text-sm font-semibold text-[#1A1A1A] mb-3"
+                className="flex items-center justify-between w-full text-sm font-semibold text-[#0A0A0A] mb-3"
               >
                 <span>
                   Materiais disponíveis{" "}
-                  <span className="text-[#6B7280] font-normal">
-                    ({materiaisLocais.length})
-                  </span>
+                  <span className="text-[#888888] font-normal">({materiaisLocais.length})</span>
                 </span>
                 {materiaisExpanded ? (
-                  <ChevronUp className="h-4 w-4 text-[#6B7280]" />
+                  <ChevronUp className="h-4 w-4 text-[#888888]" />
                 ) : (
-                  <ChevronDown className="h-4 w-4 text-[#6B7280]" />
+                  <ChevronDown className="h-4 w-4 text-[#888888]" />
                 )}
               </button>
 
@@ -511,19 +502,18 @@ export default function FornecedoresPage() {
                     transition={{ duration: 0.2 }}
                     className="overflow-hidden"
                   >
-                    {/* Lista de materiais existentes */}
                     {materiaisLocais.length > 0 && (
                       <div className="space-y-2 mb-3">
                         {materiaisLocais.map((m) => (
                           <div
                             key={m.id}
-                            className="flex items-center justify-between gap-2 bg-[#F5EDD8] rounded-lg px-3 py-2"
+                            className="flex items-center justify-between gap-2 bg-[#F5F5F5] border border-[#E5E5E5] rounded-xl px-3 py-2"
                           >
                             <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-[#1A1A1A] truncate">
+                              <p className="text-sm font-medium text-[#0A0A0A] truncate">
                                 {m.nome}
                               </p>
-                              <p className="text-xs text-[#6B7280]">
+                              <p className="text-xs text-[#888888]">
                                 {m.categoria} ·{" "}
                                 {m.tiposEvento.slice(0, 2).join(", ")}
                                 {m.tiposEvento.length > 2 && " ..."}
@@ -532,7 +522,7 @@ export default function FornecedoresPage() {
                             <button
                               type="button"
                               onClick={() => handleRemoveMaterial(m.id)}
-                              className="text-red-400 hover:text-red-600 p-1 rounded transition-colors shrink-0"
+                              className="text-red-400 hover:text-red-300 p-1 rounded transition-colors shrink-0"
                             >
                               <X className="h-3.5 w-3.5" />
                             </button>
@@ -541,45 +531,36 @@ export default function FornecedoresPage() {
                       </div>
                     )}
 
-                    {/* Formulário de novo material */}
                     {addingMaterial ? (
-                      <div className="bg-[#F5EDD8] rounded-xl p-4 space-y-3 border border-[#E5D9BF]">
-                        <p className="text-xs font-bold text-[#1A1A1A] uppercase tracking-wide">
+                      <div className="bg-[#F5F5F5] rounded-2xl p-4 space-y-3 border border-[#E5E5E5]">
+                        <p className="text-xs font-semibold text-[#0A0A0A]">
                           Novo material
                         </p>
                         <Input
                           placeholder="Nome do material *"
                           value={materialDraft.nome}
                           onChange={(e) =>
-                            setMaterialDraft((d) => ({
-                              ...d,
-                              nome: e.target.value,
-                            }))
+                            setMaterialDraft((d) => ({ ...d, nome: e.target.value }))
                           }
-                          className="border-[#E5D9BF] bg-white rounded-lg h-9 text-sm"
+                          className="border-[#E5E5E5] bg-white text-[#0A0A0A] placeholder:text-[#888888]/60 rounded-full h-9 text-sm"
                         />
                         <Select
                           value={materialDraft.categoria}
                           onValueChange={(v) =>
-                            setMaterialDraft((d) => ({
-                              ...d,
-                              categoria: v as CategoriaVitrine,
-                            }))
+                            setMaterialDraft((d) => ({ ...d, categoria: v as CategoriaVitrine }))
                           }
                         >
-                          <SelectTrigger className="border-[#E5D9BF] bg-white rounded-lg h-9 text-sm">
+                          <SelectTrigger className="border-[#E5E5E5] bg-white text-[#0A0A0A] rounded-full h-9 text-sm">
                             <SelectValue placeholder="Categoria *" />
                           </SelectTrigger>
                           <SelectContent>
                             {CATEGORIAS_VITRINE.map((c) => (
-                              <SelectItem key={c} value={c}>
-                                {c}
-                              </SelectItem>
+                              <SelectItem key={c} value={c}>{c}</SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
                         <div>
-                          <p className="text-xs font-medium text-[#1A1A1A] mb-2">
+                          <p className="text-xs font-medium text-[#0A0A0A] mb-2">
                             Tipos de evento *
                           </p>
                           <div className="flex flex-wrap gap-1.5">
@@ -590,8 +571,8 @@ export default function FornecedoresPage() {
                                 onClick={() => handleToggleTipoEvento(t)}
                                 className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
                                   materialDraft.tiposEvento.includes(t)
-                                    ? "bg-[#2D6A4F] text-white border-[#2D6A4F]"
-                                    : "bg-white text-[#6B7280] border-[#E5D9BF] hover:border-[#2D6A4F]/40"
+                                    ? "bg-[#3A7D5A] text-white border-[#3A7D5A]"
+                                    : "bg-transparent text-[#888888] border-[#E5E5E5] hover:border-[#3A7D5A]/40 hover:text-[#0A0A0A]"
                                 }`}
                               >
                                 {t}
@@ -603,12 +584,9 @@ export default function FornecedoresPage() {
                           placeholder="Descrição curta"
                           value={materialDraft.descricao}
                           onChange={(e) =>
-                            setMaterialDraft((d) => ({
-                              ...d,
-                              descricao: e.target.value,
-                            }))
+                            setMaterialDraft((d) => ({ ...d, descricao: e.target.value }))
                           }
-                          className="border-[#E5D9BF] bg-white rounded-lg min-h-[60px] resize-none text-sm"
+                          className="border-[#E5E5E5] bg-white text-[#0A0A0A] placeholder:text-[#888888]/60 rounded-2xl min-h-[60px] resize-none text-sm"
                         />
                         <div className="flex gap-2">
                           <Button
@@ -619,7 +597,7 @@ export default function FornecedoresPage() {
                               setAddingMaterial(false);
                               setMaterialDraft(EMPTY_MATERIAL_DRAFT);
                             }}
-                            className="flex-1 border-[#E5D9BF] text-[#6B7280] rounded-lg h-8"
+                            className="flex-1 border-[#E5E5E5] text-[#888888] hover:text-[#0A0A0A] rounded-full h-8"
                           >
                             Cancelar
                           </Button>
@@ -627,7 +605,7 @@ export default function FornecedoresPage() {
                             type="button"
                             size="sm"
                             onClick={handleAddMaterial}
-                            className="flex-1 bg-[#2D6A4F] hover:bg-[#235540] text-white rounded-lg h-8"
+                            className="flex-1 bg-[#3A7D5A] hover:bg-[#4EAF7A] text-white rounded-full h-8"
                           >
                             Adicionar
                           </Button>
@@ -637,7 +615,7 @@ export default function FornecedoresPage() {
                       <button
                         type="button"
                         onClick={() => setAddingMaterial(true)}
-                        className="flex items-center gap-1.5 text-sm text-[#2D6A4F] hover:text-[#235540] font-medium transition-colors"
+                        className="flex items-center gap-1.5 text-sm text-[#3A7D5A] hover:text-[#4EAF7A] font-medium transition-colors"
                       >
                         <Plus className="h-3.5 w-3.5" />
                         Adicionar material
@@ -651,7 +629,7 @@ export default function FornecedoresPage() {
                 <button
                   type="button"
                   onClick={() => setMateriaisExpanded(true)}
-                  className="flex items-center gap-1.5 text-sm text-[#2D6A4F] hover:text-[#235540] font-medium transition-colors"
+                  className="flex items-center gap-1.5 text-sm text-[#3A7D5A] hover:text-[#4EAF7A] font-medium transition-colors"
                 >
                   <Plus className="h-3.5 w-3.5" />
                   Gerenciar materiais
@@ -663,14 +641,14 @@ export default function FornecedoresPage() {
               <Button
                 variant="outline"
                 onClick={() => setModalOpen(false)}
-                className="flex-1 border-[#E5D9BF] text-[#6B7280] rounded-xl h-10"
+                className="flex-1 border-[#E5E5E5] text-[#888888] hover:text-[#0A0A0A] rounded-full h-10"
               >
                 Cancelar
               </Button>
               <Button
                 onClick={handleSalvar}
                 disabled={saving}
-                className="flex-1 bg-[#2D6A4F] hover:bg-[#235540] text-white rounded-xl h-10 font-semibold"
+                className="flex-1 bg-[#3A7D5A] hover:bg-[#4EAF7A] text-white rounded-full h-10 font-semibold"
               >
                 {saving
                   ? "Salvando..."

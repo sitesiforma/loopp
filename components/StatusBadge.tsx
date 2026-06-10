@@ -4,23 +4,23 @@ import { cn } from "@/lib/utils";
 const STATUS_CONFIG: Record<StatusPedido, { label: string; className: string }> = {
   aguardando: {
     label: "Aguardando análise",
-    className: "bg-[#F9E784] text-[#7A6800] border-[#E8D04A]",
+    className: "bg-[#F9E784] text-[#0A0A0A] border-[#F9E784]",
   },
   em_planejamento: {
     label: "Em planejamento",
-    className: "bg-[#4A90D9]/15 text-[#1A5FA8] border-[#4A90D9]/40",
+    className: "bg-transparent text-[#444444] border-[#444444]/40",
   },
   planejamento_enviado: {
     label: "Planejamento enviado",
-    className: "bg-[#2D6A4F]/15 text-[#2D6A4F] border-[#2D6A4F]/40",
+    className: "bg-[#3A7D5A] text-white border-[#3A7D5A]",
   },
   aprovado: {
     label: "Aprovado ✓",
-    className: "bg-[#2D6A4F] text-white border-[#2D6A4F]",
+    className: "bg-[#4EAF7A] text-[#0A0A0A] border-[#4EAF7A]",
   },
   ajuste_solicitado: {
     label: "Ajuste solicitado",
-    className: "bg-orange-100 text-orange-700 border-orange-200",
+    className: "bg-transparent text-red-400 border-red-500/60",
   },
 };
 

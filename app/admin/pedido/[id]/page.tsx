@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import Logo from "@/components/Logo";
 import StatusBadge from "@/components/StatusBadge";
 import Stepper from "@/components/Stepper";
@@ -111,32 +110,32 @@ export default function AdminPedidoPage() {
   if (!user || !pedido) return null;
 
   return (
-    <div className="min-h-screen bg-[#F5EDD8] flex">
+    <div className="min-h-screen bg-white flex">
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-[#E5D9BF] flex flex-col fixed h-full z-40">
-        <div className="p-5 border-b border-[#E5D9BF]">
+      <aside className="w-64 bg-[#141414] border-r border-[#2A2A2A] flex flex-col fixed h-full z-40">
+        <div className="p-5 border-b border-[#2A2A2A]">
           <Logo size="md" href="/admin" />
         </div>
         <nav className="flex-1 p-4 space-y-1">
           <Link
             href="/admin"
-            className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[#6B7280] hover:bg-[#F5EDD8] hover:text-[#1A1A1A] font-medium text-sm transition-colors"
+            className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[#888888] hover:bg-[#2A2A2A] hover:text-white font-medium text-sm transition-colors"
           >
             <Package className="h-4 w-4" />
             Pedidos
           </Link>
           <Link
             href="/admin/fornecedores"
-            className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[#6B7280] hover:bg-[#F5EDD8] hover:text-[#1A1A1A] font-medium text-sm transition-colors"
+            className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[#888888] hover:bg-[#2A2A2A] hover:text-white font-medium text-sm transition-colors"
           >
             <Leaf className="h-4 w-4" />
             Fornecedores
           </Link>
         </nav>
-        <div className="p-4 border-t border-[#E5D9BF]">
+        <div className="p-4 border-t border-[#2A2A2A]">
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#1A1A1A] transition-colors w-full"
+            className="flex items-center gap-2 text-sm text-[#888888] hover:text-white transition-colors w-full"
           >
             <LogOut className="h-4 w-4" />
             Sair
@@ -153,7 +152,7 @@ export default function AdminPedidoPage() {
         >
           <Link
             href="/admin"
-            className="inline-flex items-center gap-1.5 text-sm text-[#6B7280] hover:text-[#2D6A4F] mb-6 transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm text-[#888888] hover:text-[#3A7D5A] mb-6 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" /> Voltar aos pedidos
           </Link>
@@ -161,13 +160,13 @@ export default function AdminPedidoPage() {
           <div className="flex items-start justify-between gap-4 mb-7">
             <div>
               <h1
-                className="text-3xl font-bold text-[#1A1A1A]"
-                style={{ fontFamily: "var(--font-fraunces)" }}
+                className="text-3xl font-bold text-[#0A0A0A]"
+                style={{ fontFamily: "var(--font-dm-sans)" }}
               >
                 {pedido.nomeEvento}
               </h1>
-              <p className="text-[#6B7280] mt-1 text-sm">
-                Cliente: <span className="font-medium text-[#1A1A1A]">{pedido.clienteNome}</span>
+              <p className="text-[#888888] mt-1 text-sm">
+                Cliente: <span className="font-medium text-[#0A0A0A]">{pedido.clienteNome}</span>
               </p>
             </div>
             <StatusBadge status={pedido.status} className="shrink-0 mt-1" />
@@ -176,54 +175,54 @@ export default function AdminPedidoPage() {
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
             <div className="xl:col-span-2 space-y-6">
               {/* Dados do evento */}
-              <Card className="p-6 bg-white border-[#E5D9BF] rounded-2xl shadow-[0_2px_16px_rgba(0,0,0,0.05)]">
+              <Card className="p-6 bg-[#F5F5F5] border-[#E5E5E5] rounded-2xl">
                 <h2
-                  className="text-lg font-bold text-[#1A1A1A] mb-4"
-                  style={{ fontFamily: "var(--font-fraunces)" }}
+                  className="text-lg font-bold text-[#0A0A0A] mb-4"
+                  style={{ fontFamily: "var(--font-dm-sans)" }}
                 >
                   Dados do evento
                 </h2>
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div className="flex items-start gap-2.5">
-                    <Calendar className="h-4 w-4 text-[#4A90D9] mt-0.5 shrink-0" />
+                    <Calendar className="h-4 w-4 text-[#3A7D5A] mt-0.5 shrink-0" />
                     <div>
-                      <p className="text-xs text-[#6B7280]">Data</p>
-                      <p className="text-sm font-medium">{formatDate(pedido.dataEvento)}</p>
+                      <p className="text-xs text-[#888888]">Data</p>
+                      <p className="text-sm font-medium text-[#0A0A0A]">{formatDate(pedido.dataEvento)}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-2.5">
-                    <MapPin className="h-4 w-4 text-[#4A90D9] mt-0.5 shrink-0" />
+                    <MapPin className="h-4 w-4 text-[#3A7D5A] mt-0.5 shrink-0" />
                     <div>
-                      <p className="text-xs text-[#6B7280]">Local</p>
-                      <p className="text-sm font-medium">{pedido.localizacao}</p>
+                      <p className="text-xs text-[#888888]">Local</p>
+                      <p className="text-sm font-medium text-[#0A0A0A]">{pedido.localizacao}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-2.5">
-                    <Users className="h-4 w-4 text-[#4A90D9] mt-0.5 shrink-0" />
+                    <Users className="h-4 w-4 text-[#3A7D5A] mt-0.5 shrink-0" />
                     <div>
-                      <p className="text-xs text-[#6B7280]">Tamanho</p>
-                      <p className="text-sm font-medium">{pedido.tamanho}</p>
+                      <p className="text-xs text-[#888888]">Tamanho</p>
+                      <p className="text-sm font-medium text-[#0A0A0A]">{pedido.tamanho}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-2.5">
-                    <Wallet className="h-4 w-4 text-[#4A90D9] mt-0.5 shrink-0" />
+                    <Wallet className="h-4 w-4 text-[#3A7D5A] mt-0.5 shrink-0" />
                     <div>
-                      <p className="text-xs text-[#6B7280]">Orçamento</p>
-                      <p className="text-sm font-medium">{pedido.orcamento}</p>
+                      <p className="text-xs text-[#888888]">Orçamento</p>
+                      <p className="text-sm font-medium text-[#0A0A0A]">{pedido.orcamento}</p>
                     </div>
                   </div>
                 </div>
-                <div className="pt-4 border-t border-[#E5D9BF]">
-                  <p className="text-xs text-[#6B7280] mb-1">Descrição</p>
-                  <p className="text-sm text-[#1A1A1A] leading-relaxed">{pedido.descricao}</p>
+                <div className="pt-4 border-t border-[#E5E5E5]">
+                  <p className="text-xs text-[#888888] mb-1">Descrição</p>
+                  <p className="text-sm text-[#444444] leading-relaxed">{pedido.descricao}</p>
                 </div>
               </Card>
 
               {/* Fornecedores */}
-              <Card className="p-6 bg-white border-[#E5D9BF] rounded-2xl shadow-[0_2px_16px_rgba(0,0,0,0.05)]">
+              <Card className="p-6 bg-[#F5F5F5] border-[#E5E5E5] rounded-2xl">
                 <h2
-                  className="text-lg font-bold text-[#1A1A1A] mb-4"
-                  style={{ fontFamily: "var(--font-fraunces)" }}
+                  className="text-lg font-bold text-[#0A0A0A] mb-4"
+                  style={{ fontFamily: "var(--font-dm-sans)" }}
                 >
                   Fornecedores sugeridos
                 </h2>
@@ -233,25 +232,25 @@ export default function AdminPedidoPage() {
                       key={f.id}
                       className={`flex items-start gap-3 p-3.5 rounded-xl border transition-colors cursor-pointer ${
                         selecionados.includes(f.id)
-                          ? "border-[#2D6A4F]/40 bg-[#2D6A4F]/5"
-                          : "border-[#E5D9BF] hover:bg-[#F5EDD8]/60"
+                          ? "border-[#3A7D5A]/40 bg-[#3A7D5A]/5"
+                          : "border-[#E5E5E5] bg-white hover:bg-[#F0F0F0]"
                       }`}
                       onClick={() => toggleFornecedor(f.id)}
                     >
                       <Checkbox
                         checked={selecionados.includes(f.id)}
                         onCheckedChange={() => toggleFornecedor(f.id)}
-                        className="mt-0.5 border-[#2D6A4F] data-[state=checked]:bg-[#2D6A4F]"
+                        className="mt-0.5 border-[#3A7D5A] data-[state=checked]:bg-[#3A7D5A]"
                       />
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
-                          <p className="font-semibold text-sm text-[#1A1A1A]">{f.nome}</p>
-                          <span className="text-xs bg-[#4A90D9]/10 text-[#4A90D9] px-2 py-0.5 rounded-full border border-[#4A90D9]/20">
+                          <p className="font-semibold text-sm text-[#0A0A0A]">{f.nome}</p>
+                          <span className="text-xs bg-[#3A7D5A]/10 text-[#3A7D5A] px-2 py-0.5 rounded-full border border-[#3A7D5A]/20">
                             {f.categoria}
                           </span>
                         </div>
-                        <p className="text-xs text-[#6B7280] mt-0.5 leading-relaxed">{f.descricao}</p>
-                        <p className="text-xs text-[#2D6A4F] mt-1">{f.contato}</p>
+                        <p className="text-xs text-[#888888] mt-0.5 leading-relaxed">{f.descricao}</p>
+                        <p className="text-xs text-[#3A7D5A] mt-1">{f.contato}</p>
                       </div>
                     </div>
                   ))}
@@ -259,10 +258,10 @@ export default function AdminPedidoPage() {
               </Card>
 
               {/* Editor de planejamento */}
-              <Card className="p-6 bg-white border-[#E5D9BF] rounded-2xl shadow-[0_2px_16px_rgba(0,0,0,0.05)]">
+              <Card className="p-6 bg-[#F5F5F5] border-[#E5E5E5] rounded-2xl">
                 <h2
-                  className="text-lg font-bold text-[#1A1A1A] mb-4"
-                  style={{ fontFamily: "var(--font-fraunces)" }}
+                  className="text-lg font-bold text-[#0A0A0A] mb-4"
+                  style={{ fontFamily: "var(--font-dm-sans)" }}
                 >
                   Planejamento sustentável
                 </h2>
@@ -270,7 +269,7 @@ export default function AdminPedidoPage() {
                   placeholder="Descreva o planejamento: quais fornecedores serão acionados, o que cada um entrega, cronograma de contato, estimativa de custo e impacto sustentável..."
                   value={planejamento}
                   onChange={(e) => setPlanejamento(e.target.value)}
-                  className="border-[#E5D9BF] rounded-xl min-h-[220px] resize-y text-sm leading-relaxed"
+                  className="border-[#E5E5E5] bg-white text-[#0A0A0A] placeholder:text-[#888888]/60 rounded-2xl min-h-[220px] resize-y text-sm leading-relaxed"
                 />
 
                 <div className="flex gap-3 mt-4">
@@ -278,14 +277,14 @@ export default function AdminPedidoPage() {
                     variant="outline"
                     onClick={() => handleSalvar()}
                     disabled={saving}
-                    className="flex-1 border-[#E5D9BF] text-[#6B7280] rounded-xl h-10"
+                    className="flex-1 border-[#E5E5E5] text-[#888888] hover:text-[#0A0A0A] rounded-full h-10"
                   >
                     {saving ? "Salvando..." : "Salvar rascunho"}
                   </Button>
                   <Button
                     onClick={() => handleSalvar("planejamento_enviado")}
                     disabled={saving || !planejamento.trim()}
-                    className="flex-1 bg-[#2D6A4F] hover:bg-[#235540] text-white rounded-xl h-10 font-semibold"
+                    className="flex-1 bg-[#3A7D5A] hover:bg-[#4EAF7A] text-white rounded-full h-10 font-semibold"
                   >
                     Enviar ao cliente
                   </Button>
@@ -296,7 +295,7 @@ export default function AdminPedidoPage() {
                     onClick={() => handleSalvar("aprovado")}
                     disabled={saving}
                     variant="outline"
-                    className="w-full mt-2 border-[#2D6A4F]/30 text-[#2D6A4F] hover:bg-[#2D6A4F]/5 rounded-xl h-10"
+                    className="w-full mt-2 border-[#3A7D5A]/30 text-[#3A7D5A] hover:bg-[#3A7D5A]/5 rounded-full h-10"
                   >
                     Marcar como aprovado
                   </Button>
@@ -306,32 +305,32 @@ export default function AdminPedidoPage() {
 
             {/* Sidebar */}
             <div className="space-y-5">
-              <Card className="p-5 bg-white border-[#E5D9BF] rounded-2xl shadow-[0_2px_16px_rgba(0,0,0,0.05)]">
+              <Card className="p-5 bg-[#F5F5F5] border-[#E5E5E5] rounded-2xl">
                 <h3
-                  className="text-base font-bold text-[#1A1A1A] mb-4"
-                  style={{ fontFamily: "var(--font-fraunces)" }}
+                  className="text-base font-bold text-[#0A0A0A] mb-4"
+                  style={{ fontFamily: "var(--font-dm-sans)" }}
                 >
                   Histórico
                 </h3>
                 <div className="space-y-3">
                   {[...pedido.historico].reverse().map((h, i) => (
                     <div key={i} className="flex items-start gap-2.5">
-                      <div className="w-2 h-2 rounded-full bg-[#2D6A4F] mt-1.5 shrink-0" />
+                      <div className="w-2 h-2 rounded-full bg-[#3A7D5A] mt-1.5 shrink-0" />
                       <div>
-                        <p className="text-sm font-medium text-[#1A1A1A]">
+                        <p className="text-sm font-medium text-[#0A0A0A]">
                           {STATUS_LABELS[h.status] || h.status}
                         </p>
-                        <p className="text-xs text-[#6B7280]">{formatDateTime(h.data)}</p>
+                        <p className="text-xs text-[#888888]">{formatDateTime(h.data)}</p>
                       </div>
                     </div>
                   ))}
                 </div>
               </Card>
 
-              <Card className="p-5 bg-white border-[#E5D9BF] rounded-2xl shadow-[0_2px_16px_rgba(0,0,0,0.05)]">
+              <Card className="p-5 bg-[#F5F5F5] border-[#E5E5E5] rounded-2xl">
                 <h3
-                  className="text-base font-bold text-[#1A1A1A] mb-4"
-                  style={{ fontFamily: "var(--font-fraunces)" }}
+                  className="text-base font-bold text-[#0A0A0A] mb-4"
+                  style={{ fontFamily: "var(--font-dm-sans)" }}
                 >
                   Status do fluxo
                 </h3>
